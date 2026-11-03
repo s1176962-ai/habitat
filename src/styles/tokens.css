@@ -1,0 +1,212 @@
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------
+   HabitatQuest · 设计变量
+   data-theme 挂在 <html> 上，明暗双主题
+---------------------------------------------------------------- */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-panel: var(--panel);
+  --color-border: var(--border);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-up: var(--up);
+  --color-down: var(--down);
+  --color-grid: var(--grid);
+
+  --font-display: 'Playfair Display', 'Songti SC', serif;
+  --font-sans: 'Inter', 'Geist Sans', -apple-system, BlinkMacSystemFont, 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+
+  --radius-card: 16px;
+}
+
+:root,
+[data-theme='light'] {
+  --background: #F5EFE3;
+  --surface: #FFFDF8;
+  --panel: #F0E9DC;
+  --border: #E3D9C6;
+  --foreground: #2A2622;
+  --muted: #857A68;
+  --accent: #C3695C;
+  --accent-soft: rgba(195, 105, 92, 0.12);
+  /* 国内习惯：涨红跌绿 */
+  --up: #C3695C;
+  --down: #5F8A5B;
+  --grid: #E3D9C6;
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-float: 0 12px 40px rgba(0, 0, 0, 0.12);
+
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
+  --background: #08080a;
+  --surface: #121215;
+  --panel: #1a1a1e;
+  --border: #26262b;
+  --foreground: #f2f0ec;
+  --muted: #9a958c;
+  --accent: #d78b72;
+  --accent-soft: rgba(215, 139, 114, 0.16);
+  --up: #d78b72;
+  --down: #7ba877;
+  --grid: #26262b;
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-float: 0 12px 40px rgba(0, 0, 0, 0.6);
+
+  color-scheme: dark;
+}
+
+/* ------------------------------ 基础排版 ------------------------------ */
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-feature-settings: 'cv11', 'ss01';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 数字统一等宽，避免 count-up 时抖动 */
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}
+
+::selection {
+  background: var(--accent-soft);
+}
+
+/* ------------------------------ 焦点环 ------------------------------ */
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ------------------------------ 滚动条 ------------------------------ */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
+}
+
+/* ------------------------------ 卡片质感 ------------------------------ */
+
+.hq-card {
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+  transition:
+    transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 300ms ease;
+}
+
+.hq-card--hover:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* ------------------------------ 骨架屏 shimmer ------------------------------ */
+
+@keyframes hq-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.hq-skeleton {
+  border-radius: 8px;
+  background-color: var(--panel);
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--border) 40%,
+    var(--border) 60%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: hq-shimmer 1.4s ease-in-out infinite;
+}
+
+/* ------------------------------ 呼吸指示灯 ------------------------------ */
+
+@keyframes hq-breathe {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(0.82);
+  }
+}
+
+.hq-breathe {
+  animation: hq-breathe 2s ease-in-out infinite;
+}
+
+@keyframes hq-flash {
+  0% {
+    background-color: var(--accent-soft);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.hq-flash {
+  animation: hq-flash 0.9s ease-out;
+}
+
+/* ------------------------------ reduced motion ------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
