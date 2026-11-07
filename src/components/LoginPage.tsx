@@ -4,6 +4,7 @@ import { ArrowRight, Eye, EyeOff, Lock, Mail, ShieldCheck } from 'lucide-react';
 import AvatarShape from './AvatarShape';
 import { HexLogo } from './TopBar';
 import { classStudents } from '../mock/students';
+import { useI18n } from '../i18n';
 
 interface Props {
   onLogin: (origin: { x: number; y: number }) => void;
@@ -32,6 +33,7 @@ function Chars({ text, dim }: { text: string; dim?: boolean }) {
 }
 
 export default function LoginPage({ onLogin, onPasswordFocus, busy }: Props) {
+  const { t } = useI18n();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPwd, setShowPwd] = useState(false);
@@ -151,7 +153,7 @@ export default function LoginPage({ onLogin, onPasswordFocus, busy }: Props) {
           </span>
         </h1>
         <p data-login-sub className="mt-4 text-[13px]" style={{ color: 'var(--muted)' }}>
-          Game-based learning · 动物栖息地探索平台
+          {t('login.subtitle')}
         </p>
         <div data-login-avatars className="mt-5 flex items-center gap-3">
           <div className="flex items-center">
@@ -162,8 +164,10 @@ export default function LoginPage({ onLogin, onPasswordFocus, busy }: Props) {
             ))}
           </div>
           <span className="text-[12px]" style={{ color: 'var(--muted)' }}>
-            本班 <b style={{ color: 'var(--foreground)' }}>{classStudents('三年级 A 班').length}</b> 位同学正在探索{' '}
-            <b style={{ color: 'var(--foreground)' }}>6 大栖息地</b>
+            {t('login.peersPrefix')}{' '}
+            <b style={{ color: 'var(--foreground)' }}>{classStudents('三年级 A 班').length}</b>{' '}
+            {t('login.peersMid')}{' '}
+            <b style={{ color: 'var(--foreground)' }}>{t('login.habitats6')}</b>
           </span>
         </div>
       </div>
@@ -177,16 +181,16 @@ export default function LoginPage({ onLogin, onPasswordFocus, busy }: Props) {
             </div>
 
             <h2 className="text-[18px] font-semibold" style={{ color: 'var(--foreground)' }}>
-              教师工作台
+              {t('login.cardTitle')}
             </h2>
             <p className="mt-0.5 text-[12px]" style={{ color: 'var(--muted)' }}>
-              Teacher Console
+              {t('login.cardSub')}
             </p>
 
             <form onSubmit={submit} className="mt-5" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               <div ref={emailRef}>
                 <label className="mb-1.5 block text-[11.5px]" style={{ color: 'var(--muted)' }}>
-                  邮箱
+                  {t('login.email')}
                 </label>
                 <div className="relative">
                   <Mail size={15} strokeWidth={1.5} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: 'var(--muted)' }} />
@@ -206,14 +210,14 @@ export default function LoginPage({ onLogin, onPasswordFocus, busy }: Props) {
                 </div>
                 {err.email && (
                   <span className="mt-1 block text-[11px]" style={{ color: 'var(--up)' }}>
-                    请输入有效的邮箱地址
+                    {t('login.emailError')}
                   </span>
                 )}
               </div>
 
               <div ref={pwdRef}>
                 <label className="mb-1.5 block text-[11.5px]" style={{ color: 'var(--muted)' }}>
-                  密码
+                  {t('login.password')}
                 </label>
                 <div className="relative">
                   <Lock size={15} strokeWidth={1.5} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: 'var(--muted)' }} />
@@ -235,7 +239,7 @@ export default function LoginPage({ onLogin, onPasswordFocus, busy }: Props) {
                   <button
                     type="button"
                     onClick={() => setShowPwd((v) => !v)}
-                    aria-label={showPwd ? '隐藏密码' : '显示密码'}
+                    aria-label={showPwd ? t('login.hidePassword') : t('login.showPassword')}
                     className="absolute right-2.5 top-1/2 -translate-y-1/2"
                     style={{ color: 'var(--muted)' }}
                   >
@@ -244,14 +248,14 @@ export default function LoginPage({ onLogin, onPasswordFocus, busy }: Props) {
                 </div>
                 {err.password && (
                   <span className="mt-1 block text-[11px]" style={{ color: 'var(--up)' }}>
-                    密码至少 6 位
+                    {t('login.passwordError')}
                   </span>
                 )}
               </div>
 
               <div>
                 <label className="mb-1.5 block text-[11.5px]" style={{ color: 'var(--muted)' }}>
-                  角色
+                  {t('login.role')}
                 </label>
                 <div
                   className="flex h-11 items-center gap-2 rounded-xl border px-3 text-[13px]"
@@ -259,8 +263,8 @@ export default function LoginPage({ onLogin, onPasswordFocus, busy }: Props) {
                   aria-disabled
                 >
                   <ShieldCheck size={15} strokeWidth={1.5} />
-                  教师 · Teacher
-                  <span className="ml-auto text-[11px]">固定</span>
+                  {t('login.roleTeacher')}
+                  <span className="ml-auto text-[11px]">{t('login.roleFixed')}</span>
                 </div>
               </div>
 
@@ -272,7 +276,7 @@ export default function LoginPage({ onLogin, onPasswordFocus, busy }: Props) {
                     onChange={(e) => setRemember(e.target.checked)}
                     className="h-3.5 w-3.5 accent-[var(--accent)]"
                   />
-                  记住我
+                  {t('login.remember')}
                 </label>
                 <button
                   type="button"
@@ -285,7 +289,7 @@ export default function LoginPage({ onLogin, onPasswordFocus, busy }: Props) {
                   className="text-[11.5px] underline-offset-2 transition-opacity hover:underline hover:opacity-80"
                   style={{ color: 'var(--accent)' }}
                 >
-                  使用演示账号
+                  {t('login.useDemo')}
                 </button>
               </div>
 
@@ -297,7 +301,7 @@ export default function LoginPage({ onLogin, onPasswordFocus, busy }: Props) {
                 className="relative mt-1 inline-flex h-11 w-full items-center justify-center gap-2 overflow-hidden rounded-xl text-[13.5px] font-medium text-white transition-all duration-300 disabled:cursor-progress"
                 style={{ background: 'var(--accent)', boxShadow: 'var(--shadow-card-hover)' }}
               >
-                <span data-login-cta>{busy ? '正在进入…' : '以演示身份登录'}</span>
+                <span data-login-cta>{busy ? t('login.submitting') : t('login.submit')}</span>
                 <ArrowRight size={15} strokeWidth={1.5} />
                 <span
                   data-login-shimmer
@@ -313,9 +317,9 @@ export default function LoginPage({ onLogin, onPasswordFocus, busy }: Props) {
           </div>
 
           <p data-login-hint className="mt-3 text-center text-[11px]" style={{ color: 'var(--muted)' }}>
-            演示账号 <b className="tnum" style={{ color: 'var(--foreground)' }}>{DEMO_ACCOUNT.email}</b> /{' '}
+            {t('login.hintLabel')} <b className="tnum" style={{ color: 'var(--foreground)' }}>{DEMO_ACCOUNT.email}</b> /{' '}
             <b className="tnum" style={{ color: 'var(--foreground)' }}>{DEMO_ACCOUNT.password}</b>
-            <span className="mt-0.5 block">无真实鉴权 · 也可自行输入任意邮箱 + 6 位以上密码</span>
+            <span className="mt-0.5 block">{t('login.hintNote')}</span>
           </p>
         </div>
       </div>

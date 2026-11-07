@@ -2,24 +2,22 @@ import { useMemo, useState } from 'react';
 import { ArrowDown, ArrowUp, Flame } from 'lucide-react';
 import AvatarShape from './AvatarShape';
 import { relativeTime, pctNum } from '../lib/format';
-import { STATUS_META, type Status } from '../mock/names';
+import type { Status } from '../mock/names';
 import type { Student } from '../mock/generator';
+import { useI18n } from '../i18n';
+import type { DictKey } from '../i18n/dict';
+import { statusLabel, studentName } from '../i18n/labels';
 
 export type FilterKey = 'all' | 'needs-attention' | 'at-risk' | 'inactive';
 export type SortKey = 'score' | 'accuracy' | 'lastActive' | 'streak';
 
-const FILTERS: { key: FilterKey; label: string }[] = [
-  { key: 'all', label: '全部' },
-  { key: 'needs-attention', label: '需关注' },
-  { key: 'at-risk', label: '落后' },
-  { key: 'inactive', label: '未活跃' },
-];
+const FILTER_KEYS: FilterKey[] = ['all', 'needs-attention', 'at-risk', 'inactive'];
 
-const COLUMNS: { key: SortKey; label: string; align?: 'center' | 'right' }[] = [
-  { key: 'score', label: '平均得分' },
-  { key: 'accuracy', label: '平均正确率' },
-  { key: 'streak', label: '连续打卡', align: 'center' },
-  { key: 'lastActive', label: '最近活跃', align: 'right' },
+const COLUMNS: { key: SortKey; labelKey: DictKey; align?: 'center' | 'right' }[] = [
+  { key: 'score', labelKey: 'table.colScore' },
+  { key: 'accuracy', labelKey: 'table.colAccuracy' },
+  { key: 'streak', labelKey: 'table.colStreak', align: 'center' },
+  { key: 'lastActive', labelKey: 'table.colLastActive', align: 'right' },
 ];
 
 const STATUS_STYLE: Record<Status, { bg: string; fg: string }> = {
@@ -46,17 +44,25 @@ interface Props {
 }
 
 export default function StudentTable({ students, query, filter, onFilter, onSelect, selectedId }: Props) {
+  const { locale, t } = useI18n();
   const [sortKey, setSortKey] = useState<SortKey>('score');
   const [asc, setAsc] = useState(false);
   const [page, setPage] = useState(0);
 
   const filtered = useMemo(() => {
-    const q = query.trim();
+    const q = query.trim().toLowerCase();
     let list = students;
     if (filter === 'needs-attention') list = list.filter((s) => s.status === 'needs-attention');
     else if (filter === 'at-risk') list = list.filter((s) => s.status === 'at-risk');
     else if (filter === 'inactive') list = list.filter((s) => s.status === 'inactive');
-    if (q) list = list.filter((s) => s.name.includes(q) || s.id.includes(q));
+    if (q) {
+      list = list.filter(
+        (s) =>
+          s.name.toLowerCase().includes(q) ||
+          s.nameEn.toLowerCase().includes(q) ||
+          s.id.toLowerCase().includes(q),
+      );
+    }
     const dir = asc ? 1 : -1;
     const sorted = [...list].sort((a, b) => {
       let d = 0;
@@ -87,17 +93,18 @@ export default function StudentTable({ students, query, filter, onFilter, onSele
     <section data-anim="panel" className="hq-card overflow-hidden">
       {/* 筛选 chips */}
       <div className="flex flex-wrap items-center gap-2 border-b border-border px-4 py-3">
-        {FILTERS.map((f) => {
-          const active = f.key === filter;
+        {FILTER_KEYS.map((f) => {
+          const active = f === filter;
           const count =
-            f.key === 'all'
+            f === 'all'
               ? students.length
-              : students.filter((s) => s.status === f.key).length;
+              : students.filter((s) => s.status === f).length;
+          const label = f === 'all' ? t('table.all') : statusLabel(f, locale);
           return (
             <button
-              key={f.key}
+              key={f}
               onClick={() => {
-                onFilter(f.key);
+                onFilter(f);
                 setPage(0);
               }}
               className="rounded-full border px-3 py-1 text-[12px] transition-all duration-300"
@@ -108,13 +115,13 @@ export default function StudentTable({ students, query, filter, onFilter, onSele
                 fontWeight: active ? 600 : 400,
               }}
             >
-              {f.label}
+              {label}
               <span className="tnum ml-1 opacity-70">{count}</span>
             </button>
           );
         })}
         <span className="ml-auto text-[11px]" style={{ color: 'var(--muted)' }}>
-          共 {filtered.length} 人 · 点击任意行查看学生详情
+          {t('table.countHint', { n: filtered.length })}
         </span>
       </div>
 
@@ -122,28 +129,30 @@ export default function StudentTable({ students, query, filter, onFilter, onSele
         <table className="w-full min-w-[720px] border-collapse text-[13px]">
           <thead>
             <tr style={{ color: 'var(--muted)' }}>
-              <th className="px-4 py-2.5 text-left font-medium">学生</th>
-              <th className="px-3 py-2.5 text-center font-medium">等级</th>
-              <th className="px-3 py-2.5 text-right font-medium">对局数</th>
-              {COLUMNS.map((c) => (
-                <th key={c.key} className="px-3 py-2.5 font-medium" style={{ textAlign: c.align ?? 'right' }}>
-                  <button
-                    onClick={() => toggleSort(c.key)}
-                    className="inline-flex items-center gap-1 transition-colors hover:text-foreground"
-                    aria-label={`按${c.label}排序`}
-                  >
-                    {c.label}
-                    {sortKey === c.key &&
-                      (asc ? <ArrowUp size={12} strokeWidth={1.5} /> : <ArrowDown size={12} strokeWidth={1.5} />)}
-                  </button>
-                </th>
-              ))}
-              <th className="px-4 py-2.5 text-right font-medium">状态</th>
+              <th className="px-4 py-2.5 text-left font-medium">{t('table.colStudent')}</th>
+              <th className="px-3 py-2.5 text-center font-medium">{t('table.colLevel')}</th>
+              <th className="px-3 py-2.5 text-right font-medium">{t('table.colGames')}</th>
+              {COLUMNS.map((c) => {
+                const label = t(c.labelKey);
+                return (
+                  <th key={c.key} className="px-3 py-2.5 font-medium" style={{ textAlign: c.align ?? 'right' }}>
+                    <button
+                      onClick={() => toggleSort(c.key)}
+                      className="inline-flex items-center gap-1 transition-colors hover:text-foreground"
+                      aria-label={t('table.sortBy', { label })}
+                    >
+                      {label}
+                      {sortKey === c.key &&
+                        (asc ? <ArrowUp size={12} strokeWidth={1.5} /> : <ArrowDown size={12} strokeWidth={1.5} />)}
+                    </button>
+                  </th>
+                );
+              })}
+              <th className="px-4 py-2.5 text-right font-medium">{t('table.colStatus')}</th>
             </tr>
           </thead>
           <tbody>
             {pageRows.map((s, i) => {
-              const st = STATUS_META[s.status];
               const ss = STATUS_STYLE[s.status];
               return (
                 <tr
@@ -173,7 +182,7 @@ export default function StudentTable({ students, query, filter, onFilter, onSele
                     <div className="flex items-center gap-2.5">
                       <AvatarShape name={s.name} idx={s.avatarIdx} size={32} />
                       <div className="leading-tight">
-                        <div style={{ color: 'var(--foreground)', fontWeight: 500 }}>{s.name}</div>
+                        <div style={{ color: 'var(--foreground)', fontWeight: 500 }}>{studentName(s, locale)}</div>
                         <div className="text-[11px]" style={{ color: 'var(--muted)' }}>
                           Lv.{s.level} · {s.xp} XP
                         </div>
@@ -217,14 +226,14 @@ export default function StudentTable({ students, query, filter, onFilter, onSele
                     </span>
                   </td>
                   <td className="px-3 py-2.5 text-right" style={{ color: 'var(--muted)' }}>
-                    {relativeTime(s.lastActiveAt)}
+                    {relativeTime(s.lastActiveAt, locale)}
                   </td>
                   <td className="px-4 py-2.5 text-right">
                     <span
                       className="inline-block rounded-full px-2 py-0.5 text-[11px]"
                       style={{ background: ss.bg, color: ss.fg }}
                     >
-                      {st.cn}
+                      {statusLabel(s.status, locale)}
                     </span>
                   </td>
                 </tr>
@@ -237,7 +246,7 @@ export default function StudentTable({ students, query, filter, onFilter, onSele
       {/* 分页 */}
       <div className="flex items-center justify-between border-t border-border px-4 py-2.5">
         <span className="text-[11px]" style={{ color: 'var(--muted)' }}>
-          第 {safePage + 1} / {pageCount} 页
+          {t('table.page', { current: safePage + 1, total: pageCount })}
         </span>
         <div className="flex items-center gap-1">
           <button
@@ -246,7 +255,7 @@ export default function StudentTable({ students, query, filter, onFilter, onSele
             className="rounded-lg border border-border px-2.5 py-1 text-[12px] disabled:opacity-40"
             style={{ color: 'var(--foreground)' }}
           >
-            上一页
+            {t('table.prev')}
           </button>
           <button
             onClick={() => setPage((p) => Math.min(pageCount - 1, p + 1))}
@@ -254,7 +263,7 @@ export default function StudentTable({ students, query, filter, onFilter, onSele
             className="rounded-lg border border-border px-2.5 py-1 text-[12px] disabled:opacity-40"
             style={{ color: 'var(--foreground)' }}
           >
-            下一页
+            {t('table.next')}
           </button>
         </div>
       </div>

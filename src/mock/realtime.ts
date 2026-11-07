@@ -4,15 +4,15 @@
  */
 import { mulberry32 } from '../lib/prng';
 import { STUDENTS } from './generator';
-import { GAME_MAP, GAME_IDS, type GameId } from './names';
+import { GAME_IDS, type GameId } from './names';
 
 export interface RealtimeEvent {
   id: string;
   studentId: string;
   studentName: string;
+  studentNameEn: string;
   className: string;
   game: GameId;
-  gameCn: string;
   score: number;
   accuracy: number;
   at: number;
@@ -50,9 +50,9 @@ export function createRealtimeStream(
       id: `rt-${++seq}`,
       studentId: s.id,
       studentName: s.name,
+      studentNameEn: s.nameEn,
       className: s.className,
       game,
-      gameCn: GAME_MAP[game].cn,
       score,
       accuracy: acc,
       at: Date.now(),

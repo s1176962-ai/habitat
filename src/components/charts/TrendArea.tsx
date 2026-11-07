@@ -4,6 +4,8 @@ import { area as d3area, curveMonotoneX, line as d3line } from 'd3-shape';
 import { useMeasure } from '../../lib/useMeasure';
 import { shortDate, weekdayLabel, pctNum, isWeekend } from '../../lib/format';
 import type { TrendPoint } from '../../mock/students';
+import { useI18n } from '../../i18n';
+import type { DictKey } from '../../i18n/dict';
 
 interface Props {
   trend: TrendPoint[];
@@ -13,12 +15,13 @@ interface Props {
 const PAD = { top: 18, right: 48, bottom: 28, left: 44 };
 
 const SERIES = [
-  { key: 'accuracy' as const, cn: '平均正确率', unit: '%', color: '#C3695C' },
-  { key: 'score' as const, cn: '平均得分', unit: '分', color: '#5A8B93' },
+  { key: 'accuracy' as const, labelKey: 'chart.seriesAccuracy' as DictKey, color: '#C3695C' },
+  { key: 'score' as const, labelKey: 'chart.seriesScore' as DictKey, color: '#5A8B93' },
 ];
 
 /** 学习趋势面积图：双系列 + hover 十字准线 + 图例切换 */
 export default function TrendArea({ trend, height = 300 }: Props) {
+  const { locale, t } = useI18n();
   const [wrapRef, width] = useMeasure<HTMLDivElement>();
   const [visible, setVisible] = useState<{ accuracy: boolean; score: boolean }>({
     accuracy: true,
@@ -85,12 +88,12 @@ export default function TrendArea({ trend, height = 300 }: Props) {
       out.push({
         i,
         x: geo.x(i),
-        label: shortDate(data[i].date),
-        sub: weekdayLabel(data[i].date),
+        label: shortDate(data[i].date, locale),
+        sub: weekdayLabel(data[i].date, locale),
       });
     }
     return out;
-  }, [geo, data]);
+  }, [geo, data, locale]);
 
   const hoverPoint = hover != null ? data[hover] : null;
 
@@ -123,12 +126,12 @@ export default function TrendArea({ trend, height = 300 }: Props) {
                   display: 'inline-block',
                 }}
               />
-              {s.cn}
+              {t(s.labelKey)}
             </button>
           );
         })}
         <span className="ml-auto text-[11px]" style={{ color: 'var(--muted)' }}>
-          {hoverPoint ? shortDate(hoverPoint.date) : '悬停查看每日明细'}
+          {hoverPoint ? shortDate(hoverPoint.date, locale) : t('chart.hoverHint')}
         </span>
       </div>
 
@@ -275,12 +278,26 @@ export default function TrendArea({ trend, height = 300 }: Props) {
           }}
         >
           <div style={{ fontWeight: 600, marginBottom: 4, color: 'var(--foreground)' }}>
-            {shortDate(hoverPoint.date)} · {weekdayLabel(hoverPoint.date)}
+            {shortDate(hoverPoint.date, locale)} · {weekdayLabel(hoverPoint.date, locale)}
           </div>
-          <Row color={SERIES[0].color} label="平均正确率" value={`${pctNum(hoverPoint.accuracy)}%`} show={visible.accuracy} />
-          <Row color={SERIES[1].color} label="平均得分" value={hoverPoint.score.toFixed(1)} show={visible.score} />
+          <Row
+            color={SERIES[0].color}
+            label={t('chart.seriesAccuracy')}
+            value={`${pctNum(hoverPoint.accuracy)}%`}
+            show={visible.accuracy}
+          />
+          <Row
+            color={SERIES[1].color}
+            label={t('chart.seriesScore')}
+            value={hoverPoint.score.toFixed(1)}
+            show={visible.score}
+          />
           <div style={{ color: 'var(--muted)', marginTop: 4 }}>
-            {hoverPoint.games} 局 · {hoverPoint.active} 人活跃 · {Math.round(hoverPoint.minutes)} 分钟
+            {t('chart.trendTooltip', {
+              games: hoverPoint.games,
+              active: hoverPoint.active,
+              minutes: Math.round(hoverPoint.minutes),
+            })}
           </div>
         </div>
       )}

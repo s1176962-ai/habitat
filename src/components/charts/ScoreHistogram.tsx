@@ -3,6 +3,8 @@ import { scaleBand, scaleLinear } from 'd3-scale';
 import { useMeasure } from '../../lib/useMeasure';
 import { GAMES, type GameId } from '../../mock/names';
 import type { HistogramBin } from '../../mock/students';
+import { useI18n } from '../../i18n';
+import { gameLabel } from '../../i18n/labels';
 
 interface Props {
   bins: HistogramBin[];
@@ -19,6 +21,7 @@ const PAD = { top: 16, right: 8, bottom: 30, left: 36 };
 
 /** 得分分布直方图：按小游戏分组的堆叠柱状 */
 export default function ScoreHistogram({ bins, height = 268 }: Props) {
+  const { locale, t } = useI18n();
   const [wrapRef, width] = useMeasure<HTMLDivElement>();
   const [hover, setHover] = useState<number | null>(null);
 
@@ -44,7 +47,7 @@ export default function ScoreHistogram({ bins, height = 268 }: Props) {
         {GAMES.map((g) => (
           <span key={g.id} className="inline-flex items-center gap-1.5 text-[11px]" style={{ color: 'var(--muted)' }}>
             <span style={{ width: 8, height: 8, borderRadius: 2, background: GAME_COLOR[g.id], display: 'inline-block' }} />
-            {g.cn}
+            {gameLabel(g.id, locale)}
           </span>
         ))}
       </div>
@@ -125,12 +128,12 @@ export default function ScoreHistogram({ bins, height = 268 }: Props) {
           }}
         >
           <div style={{ fontWeight: 600, marginBottom: 4 }}>
-            {bins[hover].label} 分 · {bins[hover].total} 局
+            {t('chart.histTooltip', { range: bins[hover].label, total: bins[hover].total })}
           </div>
           {GAMES.map((g) => (
             <div key={g.id} style={{ display: 'flex', alignItems: 'center', gap: 6, lineHeight: 1.7 }}>
               <span style={{ width: 8, height: 8, borderRadius: 2, background: GAME_COLOR[g.id] }} />
-              <span style={{ color: 'var(--muted)' }}>{g.cn}</span>
+              <span style={{ color: 'var(--muted)' }}>{gameLabel(g.id, locale)}</span>
               <span className="tnum" style={{ marginLeft: 'auto', fontWeight: 600 }}>
                 {bins[hover].byGame[g.id] ?? 0}
               </span>

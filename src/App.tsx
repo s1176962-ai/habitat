@@ -4,12 +4,15 @@ import LoginPage from './components/LoginPage';
 import DashboardPage from './components/DashboardPage';
 import { ClipPathDefs } from './components/AvatarShape';
 import { useTheme } from './lib/useTheme';
+import { useI18n } from './i18n';
+import LanguageToggle from './components/LanguageToggle';
 import type { ShapeTrailEngine } from './lib/shapeTrail/engine';
 import { usePageTransition, type Stage } from './transition/usePageTransition';
 
 export default function App() {
   const engineRef = useRef<ShapeTrailEngine | null>(null);
   const { theme, toggle } = useTheme();
+  const { t } = useI18n();
   const [stage, setStage] = useState<Stage>('login');
   const [skeleton, setSkeleton] = useState(false);
 
@@ -48,18 +51,22 @@ export default function App() {
           busy={busy || stage === 'transition'}
         />
         {stage !== 'dashboard' && (
-          <span
-            className="fixed right-4 top-4 z-50 rounded-full border px-2.5 py-1 text-[10.5px]"
-            style={{
-              borderColor: 'var(--border)',
-              color: 'var(--muted)',
-              background: 'color-mix(in srgb, var(--surface) 80%, transparent)',
-              backdropFilter: 'blur(6px)',
-            }}
-            title="本界面为课程项目原型"
-          >
-            演示原型 · Demo
-          </span>
+          <div className="fixed right-4 top-4 z-50 flex items-center gap-2">
+            <LanguageToggle compact />
+            <span
+              className="rounded-full border px-2.5 py-1 text-[10.5px]"
+              style={{
+                borderColor: 'var(--border)',
+                color: 'var(--muted)',
+                background: 'color-mix(in srgb, var(--surface) 80%, transparent)',
+                backdropFilter: 'blur(6px)',
+                whiteSpace: 'nowrap',
+              }}
+              title={t('common.demoTitle')}
+            >
+              {t('common.demo')}
+            </span>
+          </div>
         )}
       </div>
 

@@ -1,0 +1,556 @@
+- generic [ref=e2]:
+  - generic [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - heading "H a b i t a t Q u e s t" [level=1] [ref=e7]:
+          - generic [ref=e9]:
+            - generic [ref=e10]: H
+            - generic [ref=e11]: a
+            - generic [ref=e12]: b
+            - generic [ref=e13]: i
+            - generic [ref=e14]: t
+            - generic [ref=e15]: a
+            - generic [ref=e16]: t
+          - generic [ref=e18]:
+            - generic [ref=e19]: Q
+            - generic [ref=e20]: u
+            - generic [ref=e21]: e
+            - generic [ref=e22]: s
+            - generic [ref=e23]: t
+        - paragraph [ref=e24]: Game-based learning · 动物栖息地探索平台
+        - generic [ref=e25]:
+          - generic [ref=e26]:
+            - img "罗若曦" [ref=e28]
+            - img "赵亦寒" [ref=e50]
+            - img "孙清和" [ref=e73]
+            - img "胡诗琪" [ref=e95]
+            - img "何雨桐" [ref=e117]
+          - generic [ref=e138]: 本班 27 位同学正在探索 6 大栖息地
+      - generic [ref=e140]:
+        - generic [ref=e141]:
+          - heading "教师工作台" [level=2] [ref=e146]
+          - paragraph [ref=e147]: Teacher Console
+          - generic [ref=e148]:
+            - generic [ref=e149]:
+              - generic [ref=e150]: 邮箱
+              - textbox "teacher@habitatquest.edu" [ref=e155]
+            - generic [ref=e156]:
+              - generic [ref=e157]: 密码
+              - generic [ref=e158]:
+                - textbox "••••••••" [ref=e162]
+                - button "显示密码" [ref=e163]
+            - generic [ref=e167]:
+              - generic [ref=e168]: 角色
+              - generic [ref=e169]:
+                - text: 教师 · Teacher
+                - generic [ref=e173]: 固定
+            - generic [ref=e174]:
+              - generic [ref=e175]:
+                - checkbox "记住我" [checked] [ref=e176]
+                - text: 记住我
+              - button "使用演示账号" [ref=e177]
+            - button "登录" [ref=e178]
+        - paragraph [ref=e182]:
+          - text: 演示账号 teacher@habitatquest.edu / habitat2026
+          - generic [ref=e183]: 无真实鉴权 · 也可自行输入任意邮箱 + 6 位以上密码
+    - generic [ref=e184]:
+      - group "界面语言" [ref=e185]:
+        - button "简体中文" [pressed] [ref=e186]: 中
+        - button "English" [ref=e187]: EN
+      - generic "本界面为课程项目原型" [ref=e188]: 演示原型 · Demo
+  - generic [aria-hidden]:
+    - generic:
+      - banner:
+        - generic:
+          - generic: HabitatQuest · 教师工作台
+          - tablist:
+            - tab [selected]: A 班
+            - tab: B 班
+            - tab: C 班
+          - generic:
+            - generic:
+              - button: 7 天
+              - button: 30 天
+              - button: 本学期
+            - generic:
+              - textbox:
+                - /placeholder: 搜索学生
+            - button:
+              - generic: 实时
+            - button
+            - group:
+              - button [pressed]: 中
+              - button: EN
+            - generic: Ms. 吴
+            - button:
+              - generic: 退出登录
+            - generic: 演示原型 · Demo
+      - main:
+        - generic:
+          - generic:
+            - heading [level=2]: 下午好，吴老师
+            - paragraph: 三年级 A 班 · 27 名学生 · 近 7 天共完成 366 局
+          - paragraph: 数据口径：班级平均 = 按作答量加权平均，与下方图表一致
+        - generic:
+          - generic:
+            - generic: 活跃学生
+            - generic:
+              - generic:
+                - generic: 27 / 27
+                - generic: 人
+            - generic: 有对局记录的人数 · 近 30 天
+          - generic:
+            - generic:
+              - generic: 平均正确率
+              - generic: ▲ +0.8%
+            - generic: 81.7%
+          - generic:
+            - generic:
+              - generic: 平均得分
+              - generic: ▼ -0.3
+            - generic:
+              - generic:
+                - generic: "85.0"
+                - generic: 分
+          - generic:
+            - generic:
+              - generic: 总学习时长
+              - generic: ▼ -3.7h
+            - generic:
+              - generic:
+                - generic: "98.4"
+                - generic: 小时
+        - generic:
+          - generic:
+            - generic:
+              - heading [level=3]: 学习趋势
+              - paragraph: 平均正确率 % / 平均得分 · 悬停查看每日明细
+            - generic:
+              - generic:
+                - button [pressed]: 平均正确率
+                - button [pressed]: 平均得分
+                - generic: 悬停查看每日明细
+              - img:
+                - generic:
+                  - generic: 75%
+                  - generic: "80"
+                - generic:
+                  - generic: 80%
+                  - generic: "85"
+                - generic:
+                  - generic: 85%
+                  - generic: "91"
+                - generic:
+                  - generic: 90%
+                  - generic: "96"
+                - generic:
+                  - generic: 10-09
+                  - generic: 周五
+                - generic:
+                  - generic: 10-14
+                  - generic: 周三
+                - generic:
+                  - generic: 10-19
+                  - generic: 周一
+                - generic:
+                  - generic: 10-24
+                  - generic: 周六
+                - generic:
+                  - generic: 10-29
+                  - generic: 周四
+                - generic:
+                  - generic: 11-03
+                  - generic: 周二
+          - generic:
+            - generic:
+              - heading [level=3]: 栖息地掌握度
+              - paragraph: 本班 vs 年级平均 · 内凹处即为全班共性难点
+            - generic:
+              - img:
+                - generic:
+                  - generic: 森林
+                  - generic: 83%
+                - generic:
+                  - generic: 海洋
+                  - generic: 81%
+                - generic:
+                  - generic: 沙漠
+                  - generic: 80%
+                - generic:
+                  - generic: 草原
+                  - generic: 82%
+                - generic:
+                  - generic: 湿地
+                  - generic: 72%
+                - generic:
+                  - generic: 极地
+                  - generic: 69%
+                - generic:
+                  - generic: 本班
+                  - generic: 年级平均
+          - generic:
+            - generic:
+              - heading [level=3]: 得分分布
+              - paragraph: 按小游戏分组的堆叠柱状 · 悬停查看各段人数
+            - generic:
+              - generic:
+                - generic: 栖息地配对
+                - generic: 限时迁徙
+                - generic: 生态拼图
+              - img:
+                - generic: "0"
+                - generic: "100"
+                - generic: "200"
+                - generic: "300"
+                - generic: 0–40
+                - generic: 40–60
+                - generic: 60–75
+                - generic: 75–88
+                - generic: 88–100
+          - generic:
+            - generic:
+              - heading [level=3]: 错误热点
+              - paragraph: Top 8「动物 → 被误选的栖息地」配对
+            - generic:
+              - generic:
+                - generic:
+                  - generic: 骆驼
+                  - generic: Camel
+                  - generic: →
+                  - generic: 草原
+                  - generic: （正确：沙漠）
+                  - generic: 25 次 · 错误率 11%
+              - generic:
+                - generic:
+                  - generic: 水獭
+                  - generic: Otter
+                  - generic: →
+                  - generic: 森林
+                  - generic: （正确：湿地）
+                  - generic: 22 次 · 错误率 18%
+              - generic:
+                - generic:
+                  - generic: 北极熊
+                  - generic: Polar Bear
+                  - generic: →
+                  - generic: 海洋
+                  - generic: （正确：极地）
+                  - generic: 21 次 · 错误率 12%
+              - generic:
+                - generic:
+                  - generic: 海象
+                  - generic: Walrus
+                  - generic: →
+                  - generic: 海洋
+                  - generic: （正确：极地）
+                  - generic: 21 次 · 错误率 12%
+              - generic:
+                - generic:
+                  - generic: 北极狐
+                  - generic: Arctic Fox
+                  - generic: →
+                  - generic: 海洋
+                  - generic: （正确：极地）
+                  - generic: 21 次 · 错误率 12%
+              - generic:
+                - generic:
+                  - generic: 磷虾
+                  - generic: Krill
+                  - generic: →
+                  - generic: 海洋
+                  - generic: （正确：极地）
+                  - generic: 21 次 · 错误率 12%
+              - generic:
+                - generic:
+                  - generic: 蜻蜓
+                  - generic: Dragonfly
+                  - generic: →
+                  - generic: 森林
+                  - generic: （正确：湿地）
+                  - generic: 19 次 · 错误率 15%
+              - generic:
+                - generic:
+                  - generic: 企鹅
+                  - generic: Penguin
+                  - generic: →
+                  - generic: 海洋
+                  - generic: （正确：极地）
+                  - generic: 19 次 · 错误率 11%
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - button: 全部27
+                - button: 需关注7
+                - button: 落后4
+                - button: 未活跃0
+                - generic: 共 27 人 · 点击任意行查看学生详情
+              - generic:
+                - table:
+                  - rowgroup:
+                    - row:
+                      - columnheader: 学生
+                      - columnheader: 等级
+                      - columnheader: 对局数
+                      - columnheader:
+                        - button: 平均得分
+                      - columnheader:
+                        - button: 平均正确率
+                      - columnheader:
+                        - button: 连续打卡
+                      - columnheader:
+                        - button: 最近活跃
+                      - columnheader: 状态
+                  - rowgroup:
+                    - row:
+                      - cell:
+                        - generic:
+                          - generic:
+                            - generic: 邓皓月
+                            - generic: Lv.8 · 2252 XP
+                      - cell:
+                        - generic: "8"
+                      - cell: "73"
+                      - cell:
+                        - generic: "91.8"
+                      - cell:
+                        - generic: 92.4%
+                      - cell:
+                        - generic: "1"
+                      - cell: 1 天前
+                      - cell:
+                        - generic: 稳步提升
+                    - row:
+                      - cell:
+                        - generic:
+                          - generic:
+                            - generic: 唐俊杰
+                            - generic: Lv.12 · 6173 XP
+                      - cell:
+                        - generic: "12"
+                      - cell: "199"
+                      - cell:
+                        - generic: "90.4"
+                      - cell:
+                        - generic: 90.2%
+                      - cell:
+                        - generic: "5"
+                      - cell: 1 天前
+                      - cell:
+                        - generic: 稳步提升
+                    - row:
+                      - cell:
+                        - generic:
+                          - generic:
+                            - generic: 曹子涵
+                            - generic: Lv.12 · 4295 XP
+                      - cell:
+                        - generic: "12"
+                      - cell: "142"
+                      - cell:
+                        - generic: "89.5"
+                      - cell:
+                        - generic: 89.8%
+                      - cell:
+                        - generic: "2"
+                      - cell: 2 天前
+                      - cell:
+                        - generic: 需关注
+                    - row:
+                      - cell:
+                        - generic:
+                          - generic:
+                            - generic: 刘安琪
+                            - generic: Lv.12 · 5264 XP
+                      - cell:
+                        - generic: "12"
+                      - cell: "168"
+                      - cell:
+                        - generic: "88.9"
+                      - cell:
+                        - generic: 86.9%
+                      - cell:
+                        - generic: "1"
+                      - cell: 20 小时前
+                      - cell:
+                        - generic: 稳步提升
+                    - row:
+                      - cell:
+                        - generic:
+                          - generic:
+                            - generic: 赵皓月
+                            - generic: Lv.12 · 8618 XP
+                      - cell:
+                        - generic: "12"
+                      - cell: "282"
+                      - cell:
+                        - generic: "88.2"
+                      - cell:
+                        - generic: 87.6%
+                      - cell:
+                        - generic: "2"
+                      - cell: 1 天前
+                      - cell:
+                        - generic: 稳步提升
+                    - row:
+                      - cell:
+                        - generic:
+                          - generic:
+                            - generic: 何博文
+                            - generic: Lv.12 · 4786 XP
+                      - cell:
+                        - generic: "12"
+                      - cell: "153"
+                      - cell:
+                        - generic: "88.1"
+                      - cell:
+                        - generic: 86.7%
+                      - cell:
+                        - generic: "1"
+                      - cell: 1 天前
+                      - cell:
+                        - generic: 稳步提升
+                    - row:
+                      - cell:
+                        - generic:
+                          - generic:
+                            - generic: 冯语彤
+                            - generic: Lv.9 · 2671 XP
+                      - cell:
+                        - generic: "9"
+                      - cell: "83"
+                      - cell:
+                        - generic: "87.5"
+                      - cell:
+                        - generic: 85.3%
+                      - cell:
+                        - generic: "1"
+                      - cell: 1 天前
+                      - cell:
+                        - generic: 稳步提升
+                    - row:
+                      - cell:
+                        - generic:
+                          - generic:
+                            - generic: 朱俊杰
+                            - generic: Lv.8 · 2935 XP
+                      - cell:
+                        - generic: "8"
+                      - cell: "92"
+                      - cell:
+                        - generic: "87.2"
+                      - cell:
+                        - generic: 84.7%
+                      - cell:
+                        - generic: "1"
+                      - cell: 21 小时前
+                      - cell:
+                        - generic: 稳步提升
+                    - row:
+                      - cell:
+                        - generic:
+                          - generic:
+                            - generic: 赵亦寒
+                            - generic: Lv.12 · 5027 XP
+                      - cell:
+                        - generic: "12"
+                      - cell: "166"
+                      - cell:
+                        - generic: "86.2"
+                      - cell:
+                        - generic: 83.3%
+                      - cell:
+                        - generic: "2"
+                      - cell: 2 天前
+                      - cell:
+                        - generic: 需关注
+                    - row:
+                      - cell:
+                        - generic:
+                          - generic:
+                            - generic: 孙清和
+                            - generic: Lv.12 · 4542 XP
+                      - cell:
+                        - generic: "12"
+                      - cell: "151"
+                      - cell:
+                        - generic: "85.4"
+                      - cell:
+                        - generic: 81.1%
+                      - cell:
+                        - generic: "1"
+                      - cell: 57 分钟前
+                      - cell:
+                        - generic: 稳步提升
+              - generic:
+                - generic: 第 1 / 3 页
+                - generic:
+                  - button [disabled]: 上一页
+                  - button: 下一页
+          - generic:
+            - generic:
+              - generic:
+                - heading [level=3]: 需要关注
+                - generic: 6 人
+              - generic:
+                - generic:
+                  - button
+                  - generic:
+                    - button:
+                      - generic: 曹望舒
+                      - generic: 极地正确率仅 41%
+                  - button: 布置练习
+                - generic:
+                  - button
+                  - generic:
+                    - button:
+                      - generic: 周子涵
+                      - generic: 海洋正确率仅 48%
+                  - button: 布置练习
+                - generic:
+                  - button
+                  - generic:
+                    - button:
+                      - generic: 邓书瑶
+                      - generic: 3 天未活跃，建议提醒一次
+                  - button: 布置练习
+                - generic:
+                  - button
+                  - generic:
+                    - button:
+                      - generic: 谢云舟
+                      - generic: 湿地正确率仅 54%
+                  - button: 布置练习
+                - generic:
+                  - button
+                  - generic:
+                    - button:
+                      - generic: 何雨桐
+                      - generic: 3 天未活跃，建议提醒一次
+                  - button: 布置练习
+                - generic:
+                  - button
+                  - generic:
+                    - button:
+                      - generic: 胡诗琪
+                      - generic: 4 天未活跃，建议提醒一次
+                  - button: 布置练习
+            - generic:
+              - generic:
+                - generic:
+                  - heading [level=3]: 班级状态分布
+                  - paragraph: 按学习状态统计人数
+                - generic:
+                  - generic:
+                    - generic: 稳步提升
+                    - generic: "16"
+                  - generic:
+                    - generic: 需关注
+                    - generic: "7"
+                  - generic:
+                    - generic: 落后
+                    - generic: "4"
+                  - generic:
+                    - generic: 未活跃
+                    - generic: "0"
+                - generic: 共 1623 局 · 累计 98.4 小时

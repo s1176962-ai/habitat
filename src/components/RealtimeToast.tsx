@@ -5,6 +5,8 @@ import AvatarShape from './AvatarShape';
 import { pctNum } from '../lib/format';
 import type { RealtimeEvent } from '../mock/realtime';
 import type { Student } from '../mock/generator';
+import { useI18n } from '../i18n';
+import { gameLabel, studentName } from '../i18n/labels';
 
 interface Props {
   events: RealtimeEvent[];
@@ -27,6 +29,7 @@ export default function RealtimeToast({ events, studentOf }: Props) {
 }
 
 function Toast({ event, student }: { event: RealtimeEvent; student?: Student }) {
+  const { locale, t } = useI18n();
   const ref = useRef<HTMLDivElement>(null);
   const reduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -40,6 +43,16 @@ function Toast({ event, student }: { event: RealtimeEvent; student?: Student }) 
       { opacity: 1, y: 0, scale: 1, duration: reduced ? 0.01 : 0.45, ease: 'power3.out' },
     );
   }, [reduced]);
+
+  const name = student
+    ? studentName(student, locale)
+    : locale === 'en'
+      ? event.studentNameEn
+      : event.studentName;
+  const time = new Date(event.at).toLocaleTimeString(locale === 'en' ? 'en-US' : 'zh-CN', {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
 
   return (
     <div
@@ -55,14 +68,11 @@ function Toast({ event, student }: { event: RealtimeEvent; student?: Student }) 
       />
       <div className="leading-tight">
         <div className="text-[12.5px]" style={{ color: 'var(--foreground)' }}>
-          <b style={{ fontWeight: 600 }}>{event.studentName}</b> 刚在《{event.gameCn}》拿到{' '}
-          <span className="tnum" style={{ color: 'var(--accent)', fontWeight: 600 }}>
-            {event.score}
-          </span>{' '}
-          分
+          <b style={{ fontWeight: 600 }}>{name}</b>{' '}
+          {t('realtime.middle', { game: gameLabel(event.game, locale), score: event.score })}
         </div>
         <div className="text-[11px]" style={{ color: 'var(--muted)' }}>
-          正确率 {pctNum(event.accuracy)}% · {new Date(event.at).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}
+          {t('realtime.accuracy', { v: pctNum(event.accuracy), time })}
         </div>
       </div>
       <Trophy size={14} strokeWidth={1.5} style={{ color: 'var(--accent)', marginLeft: 'auto' }} />

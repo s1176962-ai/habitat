@@ -51,6 +51,8 @@ export interface Session {
 export interface Student {
   id: string;
   name: string;
+  /** 英文展示名；中文名仍是数据主键（头像哈希、搜索匹配均基于它） */
+  nameEn: string;
   className: string;
   /** 几何裁切框编号（0–4），头像本体由姓名哈希生成 Q 版简笔画 */
   avatarIdx: 0 | 1 | 2 | 3 | 4;
@@ -304,10 +306,12 @@ function buildStudent(rand: () => number, className: string, index: number): Stu
   else status = 'steady';
 
   const avatarIdx = randInt(rand, 0, 4) as 0 | 1 | 2 | 3 | 4;
+  const person = randomName(rand);
 
   return {
     id: `stu-${index}`,
-    name: randomName(rand),
+    name: person.cn,
+    nameEn: person.en,
     className,
     avatarIdx,
     level: clamp(Math.floor(totalGames / 14) + randInt(rand, 2, 5), 1, 12),

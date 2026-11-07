@@ -6,7 +6,6 @@ import { STUDENTS, TREND_DAYS, type Student, type Session } from './generator';
 import {
   ANIMALS,
   HABITAT_IDS,
-  HABITAT_MAP,
   GAME_IDS,
   type GameId,
   type Habitat,
@@ -15,10 +14,10 @@ import {
 export type RangeKey = '7d' | '30d' | 'term';
 
 export const RANGE_DAYS: Record<RangeKey, number> = { '7d': 7, '30d': 30, term: TREND_DAYS };
-export const RANGE_LABEL: Record<RangeKey, string> = {
-  '7d': '7 天',
-  '30d': '30 天',
-  term: '本学期',
+export const RANGE_LABEL: Record<RangeKey, Record<'zh' | 'en', string>> = {
+  '7d': { zh: '7 天', en: '7D' },
+  '30d': { zh: '30 天', en: '30D' },
+  term: { zh: '本学期', en: 'Term' },
 };
 export const RANGE_KEYS: RangeKey[] = ['7d', '30d', 'term'];
 
@@ -41,9 +40,13 @@ export interface Hotspot {
   rate: number;
 }
 
+export type AttentionReasonKey = 'inactive-both' | 'inactive' | 'accuracy';
+
+/** 原因以结构化字段保存，展示文案由界面按当前语言生成，避免数据层写死中文 */
 export interface AttentionItem {
   student: Student;
-  reason: string;
+  reasonKey: AttentionReasonKey;
+  days: number;
   habitat: Habitat;
   accuracy: number;
 }
@@ -214,15 +217,17 @@ function buildAttention(students: Student[], now: number): AttentionItem[] {
         worst = h;
       }
     }
-    let reason: string;
-    if (inactive && s.avgAccuracy < 0.7) {
-      reason = `${Math.floor(daysSince)} 天未活跃 · ${HABITAT_MAP[worst].cn}正确率仅 ${(worstAcc * 100).toFixed(0)}%`;
-    } else if (inactive) {
-      reason = `${Math.floor(daysSince)} 天未活跃，建议提醒一次`;
-    } else {
-      reason = `${HABITAT_MAP[worst].cn}正确率仅 ${(worstAcc * 100).toFixed(0)}%`;
-    }
-    items.push({ student: s, reason, habitat: worst, accuracy: worstAcc });
+    let reasonKey: AttentionReasonKey;
+    if (inactive && s.avgAccuracy < 0.7) reasonKey = 'inactive-both';
+    else if (inactive) reasonKey = 'inactive';
+    else reasonKey = 'accuracy';
+    items.push({
+      student: s,
+      reasonKey,
+      days: Math.floor(daysSince),
+      habitat: worst,
+      accuracy: worstAcc,
+    });
   }
   items.sort((a, b) => a.accuracy - b.accuracy);
   return items.slice(0, 6);

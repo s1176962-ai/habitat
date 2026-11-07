@@ -1,10 +1,12 @@
 import { useMemo } from 'react';
 import { HABITATS, habitatColorFor, type Habitat } from '../../mock/names';
 import { useMeasure } from '../../lib/useMeasure';
+import { useI18n } from '../../i18n';
 
 interface Props {
   values: Record<Habitat, number>;
   compare?: Record<Habitat, number>;
+  /** 自定义对标系列名；不传则按当前语言取「年级平均 / Grade avg.」 */
   compareLabel?: string;
   size?: number;
   dark?: boolean;
@@ -18,11 +20,13 @@ const RINGS = [0.25, 0.5, 0.75, 1];
 export default function HabitatRadar({
   values,
   compare,
-  compareLabel = '年级平均',
+  compareLabel,
   size = 260,
   dark = false,
   warnBelow = 0.7,
 }: Props) {
+  const { locale, t } = useI18n();
+  const cmpLabel = compareLabel ?? t('radar.compareLabel');
   // 自适应宽度，但设上限，避免横向拉伸导致卡片过高、与同排图表失衡
   const [wrapRef, measured] = useMeasure<HTMLDivElement>();
   const box = Math.max(200, Math.min(measured || size, Math.max(size, 340)));
@@ -136,11 +140,11 @@ export default function HabitatRadar({
               x={lx}
               y={ly}
               textAnchor={Math.abs(a.ux) < 0.2 ? 'middle' : a.ux > 0 ? 'start' : 'end'}
-              fontSize={11}
+              fontSize={locale === 'en' ? 10 : 11}
               fill={weak ? habitatColorFor(a.id, dark) : 'var(--foreground)'}
               fontWeight={weak ? 600 : 500}
             >
-              {a.cn}
+              {locale === 'en' ? a.en : a.cn}
             </text>
             <text
               x={lx}
@@ -157,16 +161,24 @@ export default function HabitatRadar({
       })}
 
       {/* 图例 */}
-      <g transform={`translate(${cx - 62}, ${box + 2})`}>
+      <g transform={`translate(${cx - (locale === 'en' ? 84 : 62)}, ${box + 2})`}>
         <rect x={0} y={-8} width={10} height={3} rx={1.5} fill="var(--accent)" />
         <text x={15} y={-4} fontSize={10} fill="var(--muted)">
-          本班
+          {t('radar.thisClass')}
         </text>
         {compare && (
           <>
-            <rect x={52} y={-8} width={10} height={3} rx={1.5} fill="var(--muted)" opacity={0.8} />
-            <text x={67} y={-4} fontSize={10} fill="var(--muted)">
-              {compareLabel}
+            <rect
+              x={locale === 'en' ? 84 : 52}
+              y={-8}
+              width={10}
+              height={3}
+              rx={1.5}
+              fill="var(--muted)"
+              opacity={0.8}
+            />
+            <text x={locale === 'en' ? 99 : 67} y={-4} fontSize={10} fill="var(--muted)">
+              {cmpLabel}
             </text>
           </>
         )}

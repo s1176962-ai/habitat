@@ -17,6 +17,9 @@ import { createRealtimeStream, type RealtimeEvent, type RealtimeStream } from '.
 import { minutesToHours, pctNum } from '../lib/format';
 import type { ThemeName } from '../lib/shapeTrail/palettes';
 import type { Student } from '../mock/generator';
+import { useI18n } from '../i18n';
+import type { DictKey } from '../i18n/dict';
+import { classLabel, statusLabel, studentName } from '../i18n/labels';
 
 interface Props {
   theme: ThemeName;
@@ -25,12 +28,12 @@ interface Props {
   skeleton: boolean;
 }
 
-function greeting(hour: number): string {
-  if (hour < 6) return '夜深了';
-  if (hour < 11) return '早上好';
-  if (hour < 14) return '中午好';
-  if (hour < 18) return '下午好';
-  return '晚上好';
+function greetingKey(hour: number): DictKey {
+  if (hour < 6) return 'greeting.night';
+  if (hour < 11) return 'greeting.morning';
+  if (hour < 14) return 'greeting.noon';
+  if (hour < 18) return 'greeting.afternoon';
+  return 'greeting.evening';
 }
 
 function Card({
@@ -64,6 +67,7 @@ function Card({
 }
 
 export default function DashboardPage({ theme, onToggleTheme, onLogout, skeleton }: Props) {
+  const { locale, t } = useI18n();
   const dark = theme === 'dark';
   const [className, setClassName] = useState<string>(CLASSES[0]);
   const [range, setRange] = useState<RangeKey>('30d');
@@ -161,6 +165,8 @@ export default function DashboardPage({ theme, onToggleTheme, onLogout, skeleton
   );
 
   const nowHour = new Date().getHours();
+  const rangeText =
+    range === '7d' ? t('kpi.range7') : range === '30d' ? t('kpi.range30') : t('kpi.rangeTerm');
 
   return (
     <div className="relative min-h-full" style={{ background: 'var(--background)', minHeight: '100vh' }}>
@@ -187,18 +193,24 @@ export default function DashboardPage({ theme, onToggleTheme, onLogout, skeleton
               className="font-display"
               style={{ fontSize: 24, fontWeight: 500, color: 'var(--foreground)' }}
             >
-              {greeting(nowHour)}，吴老师
+              {t('dashboard.greeting', {
+                greeting: t(greetingKey(nowHour)),
+                name: t('dashboard.teacherName'),
+              })}
             </h2>
             <p className="mt-1 text-[12.5px]" style={{ color: 'var(--muted)' }}>
-              {metrics.className} · {metrics.total} 名学生 · 近 7 天共完成{' '}
+              {t('dashboard.summaryPrefix', {
+                className: classLabel(metrics.className, locale),
+                total: metrics.total,
+              })}{' '}
               <b className="tnum" style={{ color: 'var(--foreground)' }}>
                 {weeklyGames}
               </b>{' '}
-              局
+              {t('dashboard.summarySuffix')}
             </p>
           </div>
           <p className="text-[11.5px]" style={{ color: 'var(--muted)' }}>
-            数据口径：班级平均 = 按作答量加权平均，与下方图表一致
+            {t('dashboard.methodNote')}
           </p>
         </div>
 
@@ -206,21 +218,21 @@ export default function DashboardPage({ theme, onToggleTheme, onLogout, skeleton
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
           <KpiCard
             icon={<Users size={14} strokeWidth={1.5} />}
-            label="活跃学生"
+            label={t('kpi.active')}
             value={metrics.activeCount}
             digits={0}
             format={(v) => `${Math.round(v)} / ${metrics.total}`}
-            unit="人"
+            unit={t('kpi.unitPerson')}
             delta={metrics.delta.active}
             deltaFormat={(v) => `${v > 0 ? '+' : ''}${Math.round(v)}`}
             spark={metrics.spark.active}
             color="#C3695C"
             flash={flash > 0}
-            sub={`有对局记录的人数 · ${range === '7d' ? '近 7 天' : range === '30d' ? '近 30 天' : '本学期'}`}
+            sub={t('kpi.subActive', { range: rangeText })}
           />
           <KpiCard
             icon={<Target size={14} strokeWidth={1.5} />}
-            label="平均正确率"
+            label={t('kpi.accuracy')}
             value={metrics.avgAccuracy}
             digits={1}
             step={0.0005}
@@ -232,11 +244,11 @@ export default function DashboardPage({ theme, onToggleTheme, onLogout, skeleton
           />
           <KpiCard
             icon={<Trophy size={14} strokeWidth={1.5} />}
-            label="平均得分"
+            label={t('kpi.score')}
             value={metrics.avgScore}
             digits={1}
             format={(v) => v.toFixed(1)}
-            unit="分"
+            unit={t('kpi.unitPoint')}
             delta={metrics.delta.score}
             deltaFormat={(v) => `${v > 0 ? '+' : ''}${v.toFixed(1)}`}
             spark={metrics.spark.score}
@@ -244,11 +256,11 @@ export default function DashboardPage({ theme, onToggleTheme, onLogout, skeleton
           />
           <KpiCard
             icon={<Clock size={14} strokeWidth={1.5} />}
-            label="总学习时长"
+            label={t('kpi.minutes')}
             value={metrics.totalMinutes}
             digits={1}
             format={(v) => minutesToHours(v)}
-            unit="小时"
+            unit={t('kpi.unitHour')}
             delta={metrics.delta.minutes / 60}
             deltaFormat={(v) => `${v > 0 ? '+' : ''}${v.toFixed(1)}h`}
             spark={metrics.spark.minutes}
@@ -258,16 +270,16 @@ export default function DashboardPage({ theme, onToggleTheme, onLogout, skeleton
 
         {/* 图表区 2×2 */}
         <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
-          <Card card="trend" title="学习趋势" sub="平均正确率 % / 平均得分 · 悬停查看每日明细">
+          <Card card="trend" title={t('card.trend')} sub={t('card.trendSub')}>
             <TrendArea trend={metrics.trend} />
           </Card>
-          <Card card="radar" title="栖息地掌握度" sub="本班 vs 年级平均 · 内凹处即为全班共性难点">
+          <Card card="radar" title={t('card.radar')} sub={t('card.radarSub')}>
             <HabitatRadar values={metrics.perHabitat} compare={metrics.gradePerHabitat} dark={dark} />
           </Card>
-          <Card card="hist" title="得分分布" sub="按小游戏分组的堆叠柱状 · 悬停查看各段人数">
+          <Card card="hist" title={t('card.hist')} sub={t('card.histSub')}>
             <ScoreHistogram bins={metrics.histogram} />
           </Card>
-          <Card card="mistake" title="错误热点" sub="Top 8「动物 → 被误选的栖息地」配对">
+          <Card card="mistake" title={t('card.mistake')} sub={t('card.mistakeSub')}>
             <MistakeBars hotspots={metrics.hotspots} dark={dark} />
           </Card>
         </div>
@@ -287,17 +299,17 @@ export default function DashboardPage({ theme, onToggleTheme, onLogout, skeleton
           <div className="order-1 xl:order-2" data-card="attention">
             <AttentionPanel
               items={metrics.attention}
-              onAssign={(it) => pushToast(`已为 ${it.student.name} 布置针对性练习`)}
+              onAssign={(it) => pushToast(t('toast.practiceAssigned', { name: studentName(it.student, locale) }))}
               onSelect={(it) => openStudent(it.student)}
             />
             <div className="mt-4">
-              <Card card="status" title="班级状态分布" sub="按学习状态统计人数">
+              <Card card="status" title={t('card.status')} sub={t('card.statusSub')}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                   {[
-                    { key: 'steady', label: '稳步提升', color: 'var(--down)' },
-                    { key: 'needs-attention', label: '需关注', color: '#B8892F' },
-                    { key: 'at-risk', label: '落后', color: 'var(--up)' },
-                    { key: 'inactive', label: '未活跃', color: 'var(--muted)' },
+                    { key: 'steady', label: statusLabel('steady', locale), color: 'var(--down)' },
+                    { key: 'needs-attention', label: statusLabel('needs-attention', locale), color: '#B8892F' },
+                    { key: 'at-risk', label: statusLabel('at-risk', locale), color: 'var(--up)' },
+                    { key: 'inactive', label: statusLabel('inactive', locale), color: 'var(--muted)' },
                   ].map((row) => {
                     const n =
                       (metrics.statusCount.steady ?? 0) +
@@ -309,7 +321,11 @@ export default function DashboardPage({ theme, onToggleTheme, onLogout, skeleton
                         : (metrics.statusCount[row.key] ?? 0);
                     return (
                       <div key={row.key} className="flex items-center gap-2 text-[12px]">
-                        <span style={{ color: 'var(--muted)', width: 56 }}>{row.label}</span>
+                        <span
+                          style={{ color: 'var(--muted)', minWidth: locale === 'en' ? 92 : 56, flexShrink: 0 }}
+                        >
+                          {row.label}
+                        </span>
                         <span
                           className="h-1.5 flex-1 overflow-hidden rounded-full"
                           style={{ background: 'var(--panel)' }}
@@ -331,7 +347,10 @@ export default function DashboardPage({ theme, onToggleTheme, onLogout, skeleton
                 </div>
                 <div className="mt-3 flex items-center gap-1.5 text-[11px]" style={{ color: 'var(--muted)' }}>
                   <Activity size={12} strokeWidth={1.5} />
-                  共 {metrics.totalGames} 局 · 累计 {minutesToHours(metrics.totalMinutes)} 小时
+                  {t('card.statusNote', {
+                    games: metrics.totalGames,
+                    hours: minutesToHours(metrics.totalMinutes),
+                  })}
                 </div>
               </Card>
             </div>

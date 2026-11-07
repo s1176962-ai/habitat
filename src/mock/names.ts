@@ -35,10 +35,6 @@ export function habitatColor(id: Habitat): string {
   return HABITAT_MAP[id]?.color ?? '#A8A29A';
 }
 
-export function habitatLabel(id: Habitat): string {
-  return HABITAT_MAP[id]?.cn ?? id;
-}
-
 /** 暗色主题下略微提亮，保证对比度 */
 export function habitatColorFor(id: Habitat, dark: boolean): string {
   const c = habitatColor(id);
@@ -56,6 +52,7 @@ export interface GameMeta {
   cn: string;
   en: string;
   desc: string;
+  descEn: string;
 }
 
 export const GAMES: GameMeta[] = [
@@ -64,18 +61,21 @@ export const GAMES: GameMeta[] = [
     cn: '栖息地配对',
     en: 'Habitat Match',
     desc: '给动物选栖息地 · 正确率导向',
+    descEn: 'Match animals to habitats · accuracy-focused',
   },
   {
     id: 'migration-rush',
     cn: '限时迁徙',
     en: 'Migration Rush',
     desc: '限时连击 · 速度导向',
+    descEn: 'Timed combos · speed-focused',
   },
   {
     id: 'biome-builder',
     cn: '生态拼图',
     en: 'Biome Builder',
     desc: '拼装完整生态系统 · 综合分',
+    descEn: 'Assemble a full ecosystem · overall score',
   },
 ];
 
@@ -182,13 +182,44 @@ const GIVEN = [
   '沐辰','清和','望舒','子墨','安琪','皓月','亦寒','南乔','沐白','云舟',
 ];
 
-export function randomName(rand: () => number): string {
-  const s = SURNAMES[Math.floor(rand() * SURNAMES.length)];
-  const g = GIVEN[Math.floor(rand() * GIVEN.length)];
-  return s + g;
+/** 与 SURNAMES 一一对应的罗马化姓氏；不额外消耗随机数，保证 seed 数据不变 */
+const SURNAMES_EN = [
+  'Wang','Li','Zhang','Liu','Chen','Yang','Zhao','Huang','Zhou','Wu',
+  'Xu','Sun','Ma','Zhu','Hu','Guo','He','Gao','Lin','Luo',
+  'Zheng','Liang','Xie','Song','Tang','Xu','Han','Feng','Deng','Cao',
+];
+/** 课堂英文名，与 GIVEN 按索引对应 */
+const GIVEN_EN = [
+  'Ethan','Mia','Leo','Chloe','Noah','Ava','Lucas','Emma','Liam','Zoe',
+  'Henry','Ivy','Owen','Ella','Jack','Maya','Felix','Nora','Caleb','Luna',
+  'Adrian','Ruby','Miles','Iris','Theo','Hazel','Eli','Stella','Nathan','Lily',
+];
+
+/** 返回同一位学生的中英文姓名；中文名仍是数据主键，英文名仅供展示 */
+export function randomName(rand: () => number): { cn: string; en: string } {
+  const si = Math.floor(rand() * SURNAMES.length);
+  const gi = Math.floor(rand() * GIVEN.length);
+  return {
+    cn: SURNAMES[si] + GIVEN[gi],
+    en: `${GIVEN_EN[gi]} ${SURNAMES_EN[si]}`,
+  };
 }
 
 export const CLASS_NAMES = ['三年级 A 班', '三年级 B 班', '三年级 C 班'] as const;
+
+export interface ClassLabel {
+  cn: string;
+  en: string;
+  shortCn: string;
+  shortEn: string;
+}
+
+/** 班级名以中文为数据键，展示时按语言取标签 */
+export const CLASS_LABELS: Record<string, ClassLabel> = {
+  '三年级 A 班': { cn: '三年级 A 班', en: 'Grade 3 · Class A', shortCn: 'A 班', shortEn: 'Class A' },
+  '三年级 B 班': { cn: '三年级 B 班', en: 'Grade 3 · Class B', shortCn: 'B 班', shortEn: 'Class B' },
+  '三年级 C 班': { cn: '三年级 C 班', en: 'Grade 3 · Class C', shortCn: 'C 班', shortEn: 'Class C' },
+};
 
 /* ------------------------------ 徽章 ------------------------------ */
 
@@ -206,10 +237,13 @@ export const BADGES = [
 
 /* ------------------------------ 状态标签 ------------------------------ */
 
-export const STATUS_META: Record<Status, { cn: string; tone: 'good' | 'warn' | 'bad' | 'idle' }> = {
-  improving: { cn: '稳步提升', tone: 'good' },
-  steady: { cn: '稳步提升', tone: 'good' },
-  'needs-attention': { cn: '需关注', tone: 'warn' },
-  'at-risk': { cn: '落后', tone: 'bad' },
-  inactive: { cn: '未活跃', tone: 'idle' },
+export const STATUS_META: Record<
+  Status,
+  { cn: string; en: string; tone: 'good' | 'warn' | 'bad' | 'idle' }
+> = {
+  improving: { cn: '稳步提升', en: 'Improving', tone: 'good' },
+  steady: { cn: '稳步提升', en: 'Steady', tone: 'good' },
+  'needs-attention': { cn: '需关注', en: 'Needs attention', tone: 'warn' },
+  'at-risk': { cn: '落后', en: 'At risk', tone: 'bad' },
+  inactive: { cn: '未活跃', en: 'Inactive', tone: 'idle' },
 };

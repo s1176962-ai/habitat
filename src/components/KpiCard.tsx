@@ -1,6 +1,7 @@
 import { useEffect, useRef, type ReactNode } from 'react';
 import gsap from 'gsap';
 import Sparkline from './charts/Sparkline';
+import { useI18n } from '../i18n';
 
 interface Props {
   icon: ReactNode;
@@ -36,6 +37,7 @@ export default function KpiCard({
   step,
   flash = false,
 }: Props) {
+  const { t } = useI18n();
   const numRef = useRef<HTMLSpanElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const fmtRef = useRef(format);
@@ -112,7 +114,7 @@ export default function KpiCard({
                 ? 'color-mix(in srgb, var(--up) 12%, transparent)'
                 : 'color-mix(in srgb, var(--down) 12%, transparent)',
             }}
-            title="与上一周期相比"
+            title={t('kpi.deltaTitle')}
           >
             {up ? '▲' : '▼'} {deltaFormat ? deltaFormat(delta) : `${up ? '+' : ''}${delta.toFixed(digits)}`}
           </span>

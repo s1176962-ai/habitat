@@ -5,9 +5,18 @@ import AvatarShape from './AvatarShape';
 import HabitatRadar from './charts/HabitatRadar';
 import Sparkline from './charts/Sparkline';
 import { durationSec, pctNum, relativeTime } from '../lib/format';
-import { BADGES, GAME_MAP, habitatColorFor, habitatLabel } from '../mock/names';
+import { habitatColorFor } from '../mock/names';
 import { recentSessions, topMistakes } from '../mock/students';
 import type { Student } from '../mock/generator';
+import { useI18n } from '../i18n';
+import {
+  animalLabel,
+  badgeLabel,
+  classLabel,
+  gameLabel,
+  habitatLabel,
+  studentName,
+} from '../i18n/labels';
 
 interface Props {
   student: Student | null;
@@ -17,11 +26,8 @@ interface Props {
   onToast: (msg: string) => void;
 }
 
-const BADGE_MAP = new Map<string, { id: string; cn: string; en: string }>(
-  BADGES.map((b) => [b.id, b]),
-);
-
 export default function StudentDrawer({ student, open, dark, onClose, onToast }: Props) {
+  const { locale, t } = useI18n();
   const panelRef = useRef<HTMLDivElement>(null);
   const maskRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
@@ -71,6 +77,7 @@ export default function StudentDrawer({ student, open, dark, onClose, onToast }:
 
   if (!mounted || !student) return null;
 
+  const displayName = studentName(student, locale);
   const radarValues = Object.fromEntries(
     Object.entries(student.perHabitat).map(([k, v]) => [k, v.accuracy]),
   ) as Record<keyof typeof student.perHabitat, number>;
@@ -79,7 +86,14 @@ export default function StudentDrawer({ student, open, dark, onClose, onToast }:
   const mistakes = topMistakes(student, 3);
 
   return (
-    <div data-drawer className="fixed inset-0" style={{ zIndex: 60 }} role="dialog" aria-modal="true" aria-label={`${student.name} 学习详情`}>
+    <div
+      data-drawer
+      className="fixed inset-0"
+      style={{ zIndex: 60 }}
+      role="dialog"
+      aria-modal="true"
+      aria-label={t('drawer.aria', { name: displayName })}
+    >
       <div
         ref={maskRef}
         onClick={onClose}
@@ -96,26 +110,26 @@ export default function StudentDrawer({ student, open, dark, onClose, onToast }:
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2">
               <h3 className="text-[17px] font-semibold" style={{ color: 'var(--foreground)' }}>
-                {student.name}
+                {displayName}
               </h3>
               <span
                 className="rounded-full px-2 py-0.5 text-[11px]"
                 style={{ background: 'var(--panel)', color: 'var(--muted)' }}
               >
-                {student.className}
+                {classLabel(student.className, locale)}
               </span>
             </div>
             <div className="mt-1 flex flex-wrap items-center gap-2 text-[11px]" style={{ color: 'var(--muted)' }}>
               <span className="rounded-full border border-border px-2 py-0.5">Lv.{student.level}</span>
               <span className="inline-flex items-center gap-1">
-                <Flame size={11} strokeWidth={1.5} /> 连续 {student.streakDays} 天
+                <Flame size={11} strokeWidth={1.5} /> {t('drawer.streak', { n: student.streakDays })}
               </span>
-              <span>{relativeTime(student.lastActiveAt)}活跃</span>
+              <span>{t('drawer.lastActive', { time: relativeTime(student.lastActiveAt, locale) })}</span>
             </div>
           </div>
           <button
             onClick={onClose}
-            aria-label="关闭"
+            aria-label={t('common.close')}
             className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border"
             style={{ color: 'var(--muted)' }}
           >
@@ -125,21 +139,21 @@ export default function StudentDrawer({ student, open, dark, onClose, onToast }:
 
         {/* 内容 */}
         <div className="flex-1 overflow-y-auto p-4" style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-          <Block title="栖息地掌握度">
+          <Block title={t('drawer.mastery')}>
             <HabitatRadar values={radarValues} size={240} dark={dark} warnBelow={0.7} />
           </Block>
 
-          <Block title="最近 30 天得分趋势">
+          <Block title={t('drawer.scoreTrend')}>
             <div style={{ background: 'var(--panel)', borderRadius: 12, padding: 10 }}>
               <Sparkline data={trend} width={360} height={54} color="var(--accent)" />
               <div className="mt-1 flex justify-between text-[10px]" style={{ color: 'var(--muted)' }}>
-                <span>30 天前</span>
-                <span>今天</span>
+                <span>{t('drawer.daysAgo30')}</span>
+                <span>{t('drawer.today')}</span>
               </div>
             </div>
           </Block>
 
-          <Block title={`最近 ${sessions.length} 场对局`}>
+          <Block title={t('drawer.recentSessions', { n: sessions.length })}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {sessions.map((s) => (
                 <div
@@ -149,82 +163,81 @@ export default function StudentDrawer({ student, open, dark, onClose, onToast }:
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-[12.5px] font-medium" style={{ color: 'var(--foreground)' }}>
-                      {GAME_MAP[s.game].cn}
+                      {gameLabel(s.game, locale)}
                     </span>
                     <span className="tnum text-[12.5px] font-semibold" style={{ color: 'var(--accent)' }}>
-                      {s.score} 分
+                      {t('common.points', { v: s.score })}
                     </span>
                   </div>
                   <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px]" style={{ color: 'var(--muted)' }}>
-                    <span style={{ color: habitatColorFor(s.habitat, dark) }}>{habitatLabel(s.habitat)}</span>
-                    <span>正确率 {pctNum(s.accuracy)}%</span>
-                    <span>{durationSec(s.durationSec)}</span>
-                    <span>错题 {s.mistakes.length}</span>
-                    <span className="ml-auto">{relativeTime(s.at)}</span>
+                    <span style={{ color: habitatColorFor(s.habitat, dark) }}>{habitatLabel(s.habitat, locale)}</span>
+                    <span>{t('common.accuracy', { v: pctNum(s.accuracy) })}</span>
+                    <span>{durationSec(s.durationSec, locale)}</span>
+                    <span>{t('drawer.mistakesCount', { n: s.mistakes.length })}</span>
+                    <span className="ml-auto">{relativeTime(s.at, locale)}</span>
                   </div>
                 </div>
               ))}
             </div>
           </Block>
 
-          <Block title="高频错题 Top 3">
+          <Block title={t('drawer.topMistakes')}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {mistakes.length === 0 && (
                 <div className="text-[12px]" style={{ color: 'var(--muted)' }}>
-                  最近没有重复出现的错题 👏
+                  {t('drawer.noMistakes')}
                 </div>
               )}
               {mistakes.map((m) => (
                 <div key={m.key} className="flex items-center gap-2 text-[12.5px]">
-                  <span style={{ color: 'var(--foreground)', fontWeight: 500 }}>{m.animal}</span>
+                  <span style={{ color: 'var(--foreground)', fontWeight: 500 }}>
+                    {animalLabel(m.animal, m.en, locale)}
+                  </span>
                   <span style={{ color: 'var(--muted)' }}>→</span>
                   <span style={{ color: habitatColorFor(m.chosen, dark), fontWeight: 600 }}>
-                    {habitatLabel(m.chosen)}
+                    {habitatLabel(m.chosen, locale)}
                   </span>
                   <span className="text-[11px]" style={{ color: 'var(--muted)' }}>
-                    应为 {habitatLabel(m.correct)}
+                    {t('drawer.shouldBe', { habitat: habitatLabel(m.correct, locale) })}
                   </span>
                   <span className="tnum ml-auto rounded-full px-2 py-0.5 text-[11px]" style={{ background: 'var(--panel)', color: 'var(--muted)' }}>
-                    {m.count} 次
+                    {t('common.times', { n: m.count })}
                   </span>
                 </div>
               ))}
             </div>
           </Block>
 
-          <Block title={`已获得徽章 · ${student.badges.length}`}>
+          <Block title={t('drawer.badges', { n: student.badges.length })}>
             <div className="flex flex-wrap gap-2">
-              {student.badges.map((b) => {
-                const meta = BADGE_MAP.get(b);
-                return (
-                  <span
-                    key={b}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-border px-2.5 py-1 text-[11px]"
-                    style={{ background: 'var(--panel)', color: 'var(--foreground)' }}
-                  >
-                    <Award size={12} strokeWidth={1.5} style={{ color: 'var(--accent)' }} />
-                    {meta?.cn ?? b}
-                  </span>
-                );
-              })}
+              {student.badges.map((b) => (
+                <span
+                  key={b}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-border px-2.5 py-1 text-[11px]"
+                  style={{ background: 'var(--panel)', color: 'var(--foreground)' }}
+                >
+                  <Award size={12} strokeWidth={1.5} style={{ color: 'var(--accent)' }} />
+                  {badgeLabel(b, locale)}
+                </span>
+              ))}
             </div>
           </Block>
 
-          <Block title="教师备注">
+          <Block title={t('drawer.notes')}>
             <textarea
               value={note}
               onChange={(e) => setNote(e.target.value)}
               rows={3}
-              placeholder="例如：湿地类动物容易混淆，下次课前先复习红树林蟹与水獭"
+              placeholder={t('drawer.notePlaceholder')}
               className="w-full resize-none rounded-xl border border-border bg-surface p-2.5 text-[12.5px] outline-none"
               style={{ color: 'var(--foreground)' }}
             />
             <button
-              onClick={() => onToast(`已保存对 ${student.name} 的备注`)}
+              onClick={() => onToast(t('toast.noteSaved', { name: displayName }))}
               className="mt-2 h-9 rounded-xl border border-border px-3 text-[12.5px] transition-all duration-300 hover:-translate-y-0.5"
               style={{ color: 'var(--foreground)' }}
             >
-              保存备注
+              {t('drawer.saveNote')}
             </button>
           </Block>
         </div>
@@ -232,11 +245,18 @@ export default function StudentDrawer({ student, open, dark, onClose, onToast }:
         {/* 底部操作 */}
         <div className="border-t border-border p-4">
           <button
-            onClick={() => onToast(`已为 ${student.name} 布置针对性练习（${habitatLabel(student.weakHabitats[0])}专题）`)}
+            onClick={() =>
+              onToast(
+                t('toast.practiceAssignedWith', {
+                  name: displayName,
+                  habitat: habitatLabel(student.weakHabitats[0], locale),
+                }),
+              )
+            }
             className="h-11 w-full rounded-xl text-[13.5px] font-medium text-white transition-all duration-300 hover:-translate-y-0.5"
             style={{ background: 'var(--accent)', boxShadow: 'var(--shadow-card-hover)' }}
           >
-            布置针对性练习
+            {t('drawer.assignPractice')}
           </button>
         </div>
       </div>

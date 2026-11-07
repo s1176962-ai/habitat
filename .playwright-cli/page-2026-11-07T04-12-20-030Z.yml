@@ -1,0 +1,553 @@
+- generic [ref=f1e2]:
+  - generic [ref=f1e4]:
+    - generic [ref=f1e5]:
+      - generic [ref=f1e6]:
+        - heading "H a b i t a t Q u e s t" [level=1] [ref=f1e7]:
+          - generic [ref=f1e9]:
+            - generic [ref=f1e10]: H
+            - generic [ref=f1e11]: a
+            - generic [ref=f1e12]: b
+            - generic [ref=f1e13]: i
+            - generic [ref=f1e14]: t
+            - generic [ref=f1e15]: a
+            - generic [ref=f1e16]: t
+          - generic [ref=f1e18]:
+            - generic [ref=f1e19]: Q
+            - generic [ref=f1e20]: u
+            - generic [ref=f1e21]: e
+            - generic [ref=f1e22]: s
+            - generic [ref=f1e23]: t
+        - paragraph [ref=f1e24]: Game-based learning · Explore animal habitats
+        - generic [ref=f1e25]:
+          - generic [ref=f1e26]:
+            - img "罗若曦" [ref=f1e28]
+            - img "赵亦寒" [ref=f1e50]
+            - img "孙清和" [ref=f1e73]
+            - img "胡诗琪" [ref=f1e95]
+            - img "何雨桐" [ref=f1e117]
+          - generic [ref=f1e138]: This class has 27 students exploring 6 habitats
+      - generic [ref=f1e140]:
+        - generic [ref=f1e141]:
+          - heading "Teacher Console" [level=2] [ref=f1e146]
+          - paragraph [ref=f1e147]: Sign in to your dashboard
+          - generic [ref=f1e148]:
+            - generic [ref=f1e149]:
+              - generic [ref=f1e150]: Email
+              - textbox "teacher@habitatquest.edu" [ref=f1e155]
+            - generic [ref=f1e156]:
+              - generic [ref=f1e157]: Password
+              - generic [ref=f1e158]:
+                - textbox "••••••••" [ref=f1e162]
+                - button "Show password" [ref=f1e163]
+            - generic [ref=f1e167]:
+              - generic [ref=f1e168]: Role
+              - generic [ref=f1e169]:
+                - text: Teacher
+                - generic [ref=f1e173]: Fixed
+            - generic [ref=f1e174]:
+              - generic [ref=f1e175]:
+                - checkbox "Remember me" [checked] [ref=f1e176]
+                - text: Remember me
+              - button "Use demo account" [ref=f1e177]
+            - button "Sign in as demo" [ref=f1e178]
+        - paragraph [ref=f1e182]:
+          - text: Demo account teacher@habitatquest.edu / habitat2026
+          - generic [ref=f1e183]: No real authentication · Any valid email and a 6+ character password also work
+    - generic [ref=f1e184]:
+      - group "Interface language" [ref=f1e185]:
+        - button "简体中文" [ref=f1e186]: 中
+        - button "English" [pressed] [ref=f1e187]: EN
+      - generic "This is a course project prototype" [ref=f1e188]: Prototype · Demo
+  - generic [aria-hidden]:
+    - generic:
+      - banner:
+        - generic:
+          - generic: HabitatQuest · Teacher Console
+          - tablist:
+            - tab [selected]: Class A
+            - tab: Class B
+            - tab: Class C
+          - generic:
+            - generic:
+              - button: 7D
+              - button: 30D
+              - button: Term
+            - generic:
+              - textbox:
+                - /placeholder: Search students
+            - button:
+              - generic: Live
+            - button
+            - group:
+              - button: 中
+              - button [pressed]: EN
+            - generic: Ms. Wu
+            - button:
+              - generic: Log out
+            - generic: Prototype · Demo
+      - main:
+        - generic:
+          - generic:
+            - heading [level=2]: Good afternoon, Ms. Wu
+            - paragraph: Grade 3 · Class A · 27 students · 366 games in the last 7 days
+          - paragraph: "Method: class averages are weighted by attempts, consistent with the charts below"
+        - generic:
+          - generic:
+            - generic: Active students
+            - generic: 27 / 27
+            - generic: Students with game records · last 30 days
+          - generic:
+            - generic:
+              - generic: Avg. accuracy
+              - generic: ▲ +0.8%
+            - generic: 81.7%
+          - generic:
+            - generic:
+              - generic: Avg. score
+              - generic: ▼ -0.3
+            - generic:
+              - generic:
+                - generic: "85.0"
+                - generic: pts
+          - generic:
+            - generic:
+              - generic: Total study time
+              - generic: ▼ -3.7h
+            - generic:
+              - generic:
+                - generic: "98.4"
+                - generic: hrs
+        - generic:
+          - generic:
+            - generic:
+              - heading [level=3]: Learning Trend
+              - paragraph: Accuracy % / Avg. score · Hover for daily details
+            - generic:
+              - generic:
+                - button [pressed]: Avg. accuracy
+                - button [pressed]: Avg. score
+                - generic: Hover for daily details
+              - img:
+                - generic:
+                  - generic: 75%
+                  - generic: "80"
+                - generic:
+                  - generic: 80%
+                  - generic: "85"
+                - generic:
+                  - generic: 85%
+                  - generic: "91"
+                - generic:
+                  - generic: 90%
+                  - generic: "96"
+                - generic:
+                  - generic: 10/09
+                  - generic: Fri
+                - generic:
+                  - generic: 10/14
+                  - generic: Wed
+                - generic:
+                  - generic: 10/19
+                  - generic: Mon
+                - generic:
+                  - generic: 10/24
+                  - generic: Sat
+                - generic:
+                  - generic: 10/29
+                  - generic: Thu
+                - generic:
+                  - generic: 11/03
+                  - generic: Tue
+          - generic:
+            - generic:
+              - heading [level=3]: Habitat Mastery
+              - paragraph: This class vs. grade average · Dips mark shared weak spots
+            - generic:
+              - img:
+                - generic:
+                  - generic: Forest
+                  - generic: 83%
+                - generic:
+                  - generic: Ocean
+                  - generic: 81%
+                - generic:
+                  - generic: Desert
+                  - generic: 80%
+                - generic:
+                  - generic: Grassland
+                  - generic: 82%
+                - generic:
+                  - generic: Wetland
+                  - generic: 72%
+                - generic:
+                  - generic: Polar
+                  - generic: 69%
+                - generic:
+                  - generic: This class
+                  - generic: Grade avg.
+          - generic:
+            - generic:
+              - heading [level=3]: Score Distribution
+              - paragraph: Stacked by mini-game · Hover for counts
+            - generic:
+              - generic:
+                - generic: Habitat Match
+                - generic: Migration Rush
+                - generic: Biome Builder
+              - img:
+                - generic: "0"
+                - generic: "100"
+                - generic: "200"
+                - generic: "300"
+                - generic: 0–40
+                - generic: 40–60
+                - generic: 60–75
+                - generic: 75–88
+                - generic: 88–100
+          - generic:
+            - generic:
+              - heading [level=3]: Mistake Hotspots
+              - paragraph: Top 8 "animal → wrong habitat" pairs
+            - generic:
+              - generic:
+                - generic:
+                  - generic: Camel
+                  - generic: 骆驼
+                  - generic: →
+                  - generic: Grassland
+                  - generic: "(correct: Desert)"
+                  - generic: 25× · 11% error rate
+              - generic:
+                - generic:
+                  - generic: Otter
+                  - generic: 水獭
+                  - generic: →
+                  - generic: Forest
+                  - generic: "(correct: Wetland)"
+                  - generic: 22× · 18% error rate
+              - generic:
+                - generic:
+                  - generic: Polar Bear
+                  - generic: 北极熊
+                  - generic: →
+                  - generic: Ocean
+                  - generic: "(correct: Polar)"
+                  - generic: 21× · 12% error rate
+              - generic:
+                - generic:
+                  - generic: Walrus
+                  - generic: 海象
+                  - generic: →
+                  - generic: Ocean
+                  - generic: "(correct: Polar)"
+                  - generic: 21× · 12% error rate
+              - generic:
+                - generic:
+                  - generic: Arctic Fox
+                  - generic: 北极狐
+                  - generic: →
+                  - generic: Ocean
+                  - generic: "(correct: Polar)"
+                  - generic: 21× · 12% error rate
+              - generic:
+                - generic:
+                  - generic: Krill
+                  - generic: 磷虾
+                  - generic: →
+                  - generic: Ocean
+                  - generic: "(correct: Polar)"
+                  - generic: 21× · 12% error rate
+              - generic:
+                - generic:
+                  - generic: Dragonfly
+                  - generic: 蜻蜓
+                  - generic: →
+                  - generic: Forest
+                  - generic: "(correct: Wetland)"
+                  - generic: 19× · 15% error rate
+              - generic:
+                - generic:
+                  - generic: Penguin
+                  - generic: 企鹅
+                  - generic: →
+                  - generic: Ocean
+                  - generic: "(correct: Polar)"
+                  - generic: 19× · 11% error rate
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - button: All27
+                - button: Needs attention7
+                - button: At risk4
+                - button: Inactive0
+                - generic: 27 students · Click a row for details
+              - generic:
+                - table:
+                  - rowgroup:
+                    - row:
+                      - columnheader: Student
+                      - columnheader: Level
+                      - columnheader: Games
+                      - columnheader:
+                        - button: Avg. score
+                      - columnheader:
+                        - button: Accuracy
+                      - columnheader:
+                        - button: Streak
+                      - columnheader:
+                        - button: Last active
+                      - columnheader: Status
+                  - rowgroup:
+                    - row:
+                      - cell:
+                        - generic:
+                          - generic:
+                            - generic: Hazel Deng
+                            - generic: Lv.8 · 2252 XP
+                      - cell:
+                        - generic: "8"
+                      - cell: "73"
+                      - cell:
+                        - generic: "91.8"
+                      - cell:
+                        - generic: 92.4%
+                      - cell:
+                        - generic: "1"
+                      - cell: 22 h ago
+                      - cell:
+                        - generic: Steady
+                    - row:
+                      - cell:
+                        - generic:
+                          - generic:
+                            - generic: Zoe Tang
+                            - generic: Lv.12 · 6173 XP
+                      - cell:
+                        - generic: "12"
+                      - cell: "199"
+                      - cell:
+                        - generic: "90.4"
+                      - cell:
+                        - generic: 90.2%
+                      - cell:
+                        - generic: "5"
+                      - cell: 1 d ago
+                      - cell:
+                        - generic: Improving
+                    - row:
+                      - cell:
+                        - generic:
+                          - generic:
+                            - generic: Chloe Cao
+                            - generic: Lv.12 · 4295 XP
+                      - cell:
+                        - generic: "12"
+                      - cell: "142"
+                      - cell:
+                        - generic: "89.5"
+                      - cell:
+                        - generic: 89.8%
+                      - cell:
+                        - generic: "2"
+                      - cell: 2 d ago
+                      - cell:
+                        - generic: Needs attention
+                    - row:
+                      - cell:
+                        - generic:
+                          - generic:
+                            - generic: Theo Liu
+                            - generic: Lv.12 · 5264 XP
+                      - cell:
+                        - generic: "12"
+                      - cell: "168"
+                      - cell:
+                        - generic: "88.9"
+                      - cell:
+                        - generic: 86.9%
+                      - cell:
+                        - generic: "1"
+                      - cell: 18 h ago
+                      - cell:
+                        - generic: Improving
+                    - row:
+                      - cell:
+                        - generic:
+                          - generic:
+                            - generic: Hazel Zhao
+                            - generic: Lv.12 · 8618 XP
+                      - cell:
+                        - generic: "12"
+                      - cell: "282"
+                      - cell:
+                        - generic: "88.2"
+                      - cell:
+                        - generic: 87.6%
+                      - cell:
+                        - generic: "2"
+                      - cell: 1 d ago
+                      - cell:
+                        - generic: Improving
+                    - row:
+                      - cell:
+                        - generic:
+                          - generic:
+                            - generic: Ella He
+                            - generic: Lv.12 · 4786 XP
+                      - cell:
+                        - generic: "12"
+                      - cell: "153"
+                      - cell:
+                        - generic: "88.1"
+                      - cell:
+                        - generic: 86.7%
+                      - cell:
+                        - generic: "1"
+                      - cell: 1 d ago
+                      - cell:
+                        - generic: Steady
+                    - row:
+                      - cell:
+                        - generic:
+                          - generic:
+                            - generic: Luna Feng
+                            - generic: Lv.9 · 2671 XP
+                      - cell:
+                        - generic: "9"
+                      - cell: "83"
+                      - cell:
+                        - generic: "87.5"
+                      - cell:
+                        - generic: 85.3%
+                      - cell:
+                        - generic: "1"
+                      - cell: 1 d ago
+                      - cell:
+                        - generic: Improving
+                    - row:
+                      - cell:
+                        - generic:
+                          - generic:
+                            - generic: Zoe Zhu
+                            - generic: Lv.8 · 2935 XP
+                      - cell:
+                        - generic: "8"
+                      - cell: "92"
+                      - cell:
+                        - generic: "87.2"
+                      - cell:
+                        - generic: 84.7%
+                      - cell:
+                        - generic: "1"
+                      - cell: 19 h ago
+                      - cell:
+                        - generic: Steady
+                    - row:
+                      - cell:
+                        - generic:
+                          - generic:
+                            - generic: Eli Zhao
+                            - generic: Lv.12 · 5027 XP
+                      - cell:
+                        - generic: "12"
+                      - cell: "166"
+                      - cell:
+                        - generic: "86.2"
+                      - cell:
+                        - generic: 83.3%
+                      - cell:
+                        - generic: "2"
+                      - cell: 2 d ago
+                      - cell:
+                        - generic: Needs attention
+                    - row:
+                      - cell:
+                        - generic:
+                          - generic:
+                            - generic: Ruby Sun
+                            - generic: Lv.12 · 4542 XP
+                      - cell:
+                        - generic: "12"
+                      - cell: "151"
+                      - cell:
+                        - generic: "85.4"
+                      - cell:
+                        - generic: 81.1%
+                      - cell:
+                        - generic: "1"
+                      - cell: 41 min ago
+                      - cell:
+                        - generic: Improving
+              - generic:
+                - generic: Page 1 of 3
+                - generic:
+                  - button [disabled]: Previous
+                  - button: Next
+          - generic:
+            - generic:
+              - generic:
+                - heading [level=3]: Needs Attention
+                - generic: 6 students
+              - generic:
+                - generic:
+                  - button
+                  - generic:
+                    - button:
+                      - generic: Miles Cao
+                      - generic: Polar accuracy only 41%
+                  - button: Assign
+                - generic:
+                  - button
+                  - generic:
+                    - button:
+                      - generic: Chloe Zhou
+                      - generic: Ocean accuracy only 48%
+                  - button: Assign
+                - generic:
+                  - button
+                  - generic:
+                    - button:
+                      - generic: Caleb Deng
+                      - generic: Inactive for 3 days · consider a reminder
+                  - button: Assign
+                - generic:
+                  - button
+                  - generic:
+                    - button:
+                      - generic: Lily Xie
+                      - generic: Wetland accuracy only 54%
+                  - button: Assign
+                - generic:
+                  - button
+                  - generic:
+                    - button:
+                      - generic: Leo He
+                      - generic: Inactive for 3 days · consider a reminder
+                  - button: Assign
+                - generic:
+                  - button
+                  - generic:
+                    - button:
+                      - generic: Henry Hu
+                      - generic: Inactive for 4 days · consider a reminder
+                  - button: Assign
+            - generic:
+              - generic:
+                - generic:
+                  - heading [level=3]: Class Status Breakdown
+                  - paragraph: Students by learning status
+                - generic:
+                  - generic:
+                    - generic: Steady
+                    - generic: "16"
+                  - generic:
+                    - generic: Needs attention
+                    - generic: "7"
+                  - generic:
+                    - generic: At risk
+                    - generic: "4"
+                  - generic:
+                    - generic: Inactive
+                    - generic: "0"
+                - generic: 1623 games · 98.4 hours total

@@ -1,5 +1,7 @@
-import { habitatColorFor, habitatLabel } from '../../mock/names';
+import { habitatColorFor } from '../../mock/names';
 import type { Hotspot } from '../../mock/students';
+import { useI18n } from '../../i18n';
+import { animalLabel, habitatLabel } from '../../i18n/labels';
 
 interface Props {
   hotspots: Hotspot[];
@@ -8,10 +10,12 @@ interface Props {
 
 /** 错误热点横条：Top 8「动物 → 错误栖息地」配对 */
 export default function MistakeBars({ hotspots, dark = false }: Props) {
+  const { locale, t } = useI18n();
+
   if (!hotspots.length) {
     return (
       <div className="flex h-40 items-center justify-center text-[13px]" style={{ color: 'var(--muted)' }}>
-        全班最近没有集中的错误 🎉
+        {t('chart.noMistakes')}
       </div>
     );
   }
@@ -22,8 +26,12 @@ export default function MistakeBars({ hotspots, dark = false }: Props) {
       {hotspots.map((h) => (
         <div key={h.key} data-mistake-row>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, fontSize: 12.5, marginBottom: 5 }}>
-            <span style={{ fontWeight: 600, color: 'var(--foreground)' }}>{h.animal}</span>
-            <span style={{ color: 'var(--muted)', fontSize: 11 }}>{h.en}</span>
+            <span style={{ fontWeight: 600, color: 'var(--foreground)' }}>
+              {animalLabel(h.animal, h.en, locale)}
+            </span>
+            <span style={{ color: 'var(--muted)', fontSize: 11 }}>
+              {locale === 'en' ? h.animal : h.en}
+            </span>
             <span style={{ color: 'var(--muted)' }}>→</span>
             <span
               style={{
@@ -31,14 +39,16 @@ export default function MistakeBars({ hotspots, dark = false }: Props) {
                 fontWeight: 600,
               }}
             >
-              {habitatLabel(h.chosen)}
+              {habitatLabel(h.chosen, locale)}
             </span>
             <span style={{ color: 'var(--muted)', fontSize: 11 }}>
-              （正确：{habitatLabel(h.correct)}）
+              {t('chart.correctAnswer', { habitat: habitatLabel(h.correct, locale) })}
             </span>
             <span className="tnum" style={{ marginLeft: 'auto', color: 'var(--muted)', fontSize: 11 }}>
-              <b style={{ color: 'var(--foreground)', fontWeight: 600 }}>{h.count}</b> 次 · 错误率{' '}
-              {(h.rate * 100).toFixed(0)}%
+              {t('chart.mistakeCount', {
+                count: h.count,
+                rate: (h.rate * 100).toFixed(0),
+              })}
             </span>
           </div>
           <div

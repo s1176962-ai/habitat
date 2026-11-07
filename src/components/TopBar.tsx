@@ -1,7 +1,10 @@
 import { Bell, BellOff, LogOut, Search, X } from 'lucide-react';
 import type { ThemeName } from '../lib/shapeTrail/palettes';
-import { RANGE_KEYS, RANGE_LABEL, type RangeKey } from '../mock/students';
+import { RANGE_KEYS, type RangeKey } from '../mock/students';
+import { useI18n } from '../i18n';
+import { classShortLabel, rangeLabel } from '../i18n/labels';
 import ThemeToggle from './ThemeToggle';
+import LanguageToggle from './LanguageToggle';
 import AvatarShape from './AvatarShape';
 
 interface Props {
@@ -48,6 +51,8 @@ export default function TopBar({
   onToggleMute,
   onLogout,
 }: Props) {
+  const { locale, t } = useI18n();
+
   return (
     <header
       data-anim="topbar"
@@ -64,7 +69,7 @@ export default function TopBar({
           </span>
           <span className="hidden text-[13px] font-medium sm:inline" style={{ color: 'var(--foreground)' }}>
             HabitatQuest
-            <span style={{ color: 'var(--muted)' }}> · 教师工作台</span>
+            <span style={{ color: 'var(--muted)' }}>{t('topbar.brandSuffix')}</span>
           </span>
         </div>
 
@@ -73,7 +78,7 @@ export default function TopBar({
           className="flex items-center rounded-full border border-border p-0.5"
           style={{ background: 'var(--panel)' }}
           role="tablist"
-          aria-label="班级切换"
+          aria-label={t('topbar.classAria')}
         >
           {classes.map((c) => {
             const active = c === current;
@@ -91,13 +96,13 @@ export default function TopBar({
                   fontWeight: active ? 600 : 400,
                 }}
               >
-                {c.replace('三年级 ', '')}
+                {classShortLabel(c, locale)}
               </button>
             );
           })}
         </div>
 
-        {/* 右：时间范围 / 搜索 / 实时 / 主题 / 头像 / 退出 */}
+        {/* 右：时间范围 / 搜索 / 实时 / 主题 / 语言 / 头像 / 退出 */}
         <div className="ml-auto flex items-center gap-2">
           <div className="hidden items-center rounded-full border border-border p-0.5 md:flex" style={{ background: 'var(--panel)' }}>
             {RANGE_KEYS.map((r) => {
@@ -113,7 +118,7 @@ export default function TopBar({
                     fontWeight: active ? 600 : 400,
                   }}
                 >
-                  {RANGE_LABEL[r]}
+                  {rangeLabel(r, locale)}
                 </button>
               );
             })}
@@ -124,15 +129,15 @@ export default function TopBar({
             <input
               value={search}
               onChange={(e) => onSearch(e.target.value)}
-              placeholder="搜索学生"
-              aria-label="搜索学生"
+              placeholder={t('topbar.searchPlaceholder')}
+              aria-label={t('topbar.searchPlaceholder')}
               className="h-9 w-[150px] rounded-xl border border-border bg-surface pl-8 pr-7 text-[12px] outline-none transition-all duration-300 focus:w-[190px]"
               style={{ color: 'var(--foreground)' }}
             />
             {search && (
               <button
                 onClick={() => onSearch('')}
-                aria-label="清空搜索"
+                aria-label={t('topbar.clearSearch')}
                 className="absolute right-2 top-1/2 -translate-y-1/2"
                 style={{ color: 'var(--muted)' }}
               >
@@ -145,42 +150,43 @@ export default function TopBar({
             onClick={onToggleMute}
             className="inline-flex h-9 items-center gap-1.5 rounded-full border border-border px-2.5 text-[12px] transition-all duration-300 hover:-translate-y-0.5"
             style={{ background: 'var(--surface)', color: muted ? 'var(--muted)' : 'var(--foreground)' }}
-            title={muted ? '实时提醒已静音，点击开启' : '实时提醒开启中，点击静音'}
+            title={muted ? t('topbar.mutedOn') : t('topbar.mutedOff')}
           >
             <span
               className={`inline-block h-1.5 w-1.5 rounded-full ${muted ? '' : 'hq-breathe'}`}
               style={{ background: muted ? 'var(--muted)' : 'var(--down)' }}
             />
-            <span className="hidden sm:inline">实时</span>
+            <span className="hidden sm:inline">{t('topbar.live')}</span>
             {muted ? <BellOff size={13} strokeWidth={1.5} /> : <Bell size={13} strokeWidth={1.5} />}
           </button>
 
           <ThemeToggle theme={theme} onToggle={onToggleTheme} />
+          <LanguageToggle />
 
           <div className="flex items-center gap-2 pl-1">
             <AvatarShape name="吴老师" idx={1} size={32} teacher />
             <span className="hidden text-[12px] xl:inline" style={{ color: 'var(--muted)' }}>
-              Ms. 吴
+              {t('topbar.teacher')}
             </span>
           </div>
 
           <button
             onClick={onLogout}
             data-logout
-            aria-label="退出登录"
+            aria-label={t('topbar.logout')}
             className="inline-flex h-9 items-center gap-1.5 rounded-full border border-border px-3 text-[12px] transition-all duration-300 hover:-translate-y-0.5"
             style={{ background: 'var(--surface)', color: 'var(--foreground)' }}
           >
             <LogOut size={13} strokeWidth={1.5} />
-            <span className="hidden sm:inline">退出登录</span>
+            <span className="hidden sm:inline">{t('topbar.logout')}</span>
           </button>
 
           <span
             className="hidden rounded-full border px-2 py-0.5 text-[10.5px] xl:inline"
             style={{ borderColor: 'var(--border)', color: 'var(--muted)', whiteSpace: 'nowrap' }}
-            title="本界面为课程项目原型"
+            title={t('common.demoTitle')}
           >
-            演示原型 · Demo
+            {t('common.demo')}
           </span>
         </div>
       </div>
